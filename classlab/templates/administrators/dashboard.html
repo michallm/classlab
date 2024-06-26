@@ -1,0 +1,262 @@
+{% extends 'base.html' %}
+{% load static i18n %}
+
+{% block title %}{% translate "Dashboard" %}{% endblock %}
+{% block content %}
+    <div class="container">
+        <h3 class="mt-3 text-center">{% translate "Maximum resource usage per hour(last 30 days)" %}</h3>
+        <div style="width: 100%;">
+         <canvas id="cpuChart"></canvas>
+        </div>
+        <div style="width: 100%;">
+         <canvas id="memoryChart"></canvas>
+        </div>
+        <div style="width: 100%;">
+         <canvas id="storageChart"></canvas>
+        </div>
+    </div>
+    {% csrf_token %}
+{% endblock %}
+
+{% block inline_javascript %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/luxon@3.3.0/build/global/luxon.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-luxon@^1"></script>
+
+<script type="text/javascript">
+    const cpuCtx = document.getElementById('cpuChart');
+    const memoryCtx = document.getElementById('memoryChart');
+    const storageCtx = document.getElementById('storageChart');
+    const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+    // Charts
+    const cpuChart = new Chart(cpuCtx, {
+            type: 'line',
+            data: {
+                datasets: [
+                    {
+                        label: '{% translate "CPU Usage" %}',
+                        data: [],
+                        borderColor: 'rgb(255, 99, 132)',
+                        backgroundColor: 'rgba(255, 99, 132, 0.5)',
+                        fill: true,
+                        tension: 0.1,
+                    },
+                    {
+                        label: '{% translate "CPU Limit" %}',
+                        data: [],
+                        borderColor: 'rgb(54, 162, 235)',
+                        backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                        fill: true,
+                        tension: 0.1,
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                datasets: {
+                    line: {
+                        pointRadius: 0 // disable for all `'line'` datasets
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'CPU [mCPU]'
+                        }
+                    },
+                    x: {
+                        type: 'time',
+                        time: {
+                            unit: 'day'
+                        },
+                        max: new Date(),
+                        min: new Date(new Date().setDate(new Date().getDate() - 30)),
+                        adapters: {
+                            date: {
+                                locale: 'pl'
+                            }
+                        },
+                    }
+                },
+                plugins: {
+                    title: {
+                        display: true,
+                        text: '{% translate "CPU Usage" %}'
+                    }
+                }
+            }
+        });
+
+    const memoryChart = new Chart(memoryCtx, {
+            type: 'line',
+            data: {
+                datasets: [
+                    {
+                        label: '{% translate "Memory Usage" %}',
+                        data: [],
+                        borderColor: 'rgb(255, 99, 132)',
+                        backgroundColor: 'rgba(255, 99, 132, 0.5)',
+                        fill: true,
+                        tension: 0.1
+                    },
+                    {
+                        label: '{% translate "Memory Limit" %}',
+                        data: [],
+                        borderColor: 'rgb(54, 162, 235)',
+                        backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                        fill: true,
+                        tension: 0.1
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                datasets: {
+                    line: {
+                        pointRadius: 0 // disable for all `'line'` datasets
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Memory [Mi]'
+                        }
+                    },
+                    x: {
+                        type: 'time',
+                        time: {
+                            unit: 'day'
+                        },
+                        max: new Date(),
+                        min: new Date(new Date().setDate(new Date().getDate() - 30)),
+                        adapters: {
+                            date: {
+                                locale: 'pl'
+                            }
+                        },
+                    }
+                },
+                plugins: {
+                    title: {
+                        display: true,
+                        text: '{% translate "Memory Usage" %}'
+                    }
+                }
+            }
+        });
+
+    const storageChart = new Chart(storageCtx, {
+            type: 'line',
+            data: {
+                datasets: [
+                    {
+                        label: '{% translate "Storage Usage" %}',
+                        data: [],
+                        borderColor: 'rgb(255, 99, 132)',
+                        backgroundColor: 'rgba(255, 99, 132, 0.5)',
+                        fill: true,
+                        tension: 0.1
+                    },
+                    {
+                        label: '{% translate "Storage Limit" %}',
+                        data: [],
+                        borderColor: 'rgb(54, 162, 235)',
+                        backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                        fill: true,
+                        tension: 0.1
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                datasets: {
+                    line: {
+                        pointRadius: 0 // disable for all `'line'` datasets
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Storage [Gi]'
+                        }
+                    },
+                    x: {
+                        type: 'time',
+                        time: {
+                            unit: 'day'
+                        },
+                        max: new Date(),
+                        min: new Date(new Date().setDate(new Date().getDate() - 30)),
+                        adapters: {
+                            date: {
+                                locale: 'pl'
+                            }
+                        },
+                    }
+                },
+                plugins: {
+                    title: {
+                        display: true,
+                        text: '{% translate "Storage Usage" %}'
+                    }
+                }
+            }
+        });
+
+
+
+    function fetchResources(url) {
+        return fetch(url, {
+            method: 'GET',
+            headers: {
+                'X-CSRFToken': csrftoken,
+            },
+        })
+        .then(response => response.json())
+        .then(data => {
+            return data;
+        })
+    }
+
+    function updateChartData(chart, data) {
+        chart.data.datasets[0].data = data['usage'];
+        chart.data.datasets[1].data = data['limit'];
+        chart.update();
+    }
+
+    function updateCPUChart() {
+        const url = '{% url 'administrators:cpu_resources' %}';
+        fetchResources(url).then(data => {
+            updateChartData(cpuChart, data);
+        })
+    }
+
+    function updateMemoryChart() {
+        const url = '{% url 'administrators:memory_resources' %}';
+        fetchResources(url).then(data => {
+            updateChartData(memoryChart, data);
+        })
+    }
+
+    function updateStorageChart() {
+        const url = '{% url 'administrators:storage_resources' %}';
+        fetchResources(url).then(data => {
+            updateChartData(storageChart, data);
+        })
+    }
+
+    updateCPUChart();
+    updateMemoryChart();
+    updateStorageChart();
+</script>
+{% endblock inline_javascript %}

@@ -1,0 +1,127 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: technr2
+  name: jupyterlab
+  labels:
+    app: jupyterlab
+    user: jankow
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jupyterlab
+      user: jankow
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: jupyterlab
+        user: jankow
+    spec:
+      containers:
+        - name: jupyterlab
+          image: quay.io/jupyter/datascience-notebook
+          # TODO: use secrets for token and password
+          command: ["start-notebook.py", "--NotebookApp.token=''", "--NotebookApp.password=''", "--ServerApp.root_dir='/home/scientist'"]
+          ports:
+            - containerPort: 8888
+              name: jupyterlab
+
+          volumeMounts:
+            - name: data
+              mountPath: /home/scientist
+
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: jupyterlab
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  namespace: technr2
+  name: jupyterlab
+  labels:
+    app: jupyterlab
+    user: jankow
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 500Mi
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: technr2
+  name: jupyterlab
+  labels:
+    app: jupyterlab
+    user: jankow
+spec:
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8888
+  selector:
+    app: jupyterlab
+    user: jankow
+
+# ---
+# apiVersion: keda.sh/v1alpha1
+# kind: ScaledObject
+# metadata:
+#   name: jupyterlab
+#   namespace: technr2
+# spec:
+#   scaleTargetRef:
+#     name: jupyterlab
+#   pollingInterval: 15
+#   cooldownPeriod: 600
+#   minReplicaCount: 0
+#   maxReplicaCount: 1
+#   advanced:
+#     horizontalPodAutoscalerConfig:
+#       behavior:
+#         scaleDown:
+#           stabilizationWindowSeconds: 600
+#           policies:
+#           - type: Percent
+#             value: 100
+#             periodSeconds: 15
+#         scaleUp:
+#           selectPolicy: Disabled
+#   triggers:
+#     - type: prometheus
+#       metricType: Value
+#       metadata:
+#         serverAddress: http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090
+#         query: max(max(sum(rate(container_fs_reads_total{container!="",job="kubelet",metrics_path="/metrics/cadvisor",pod=~"jupyterlab.*"}[2m30s])+rate(container_fs_writes_total{container!="",job="kubelet",metrics_path="/metrics/cadvisor",pod=~"jupyterlab.*"}[2m30s]))) * 100 > bool 10 or (time() - kube_pod_created{pod=~"jupyterlab.*", namespace="technr2"} < bool 300))
+#         threshold: "1"
+#         ignoreNullValues: "false"
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: jupyterlab
+  namespace: technr2
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: jupyterlab.apps.classlab.test
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: jupyterlab
+            port:
+              number: 80

@@ -1,0 +1,32 @@
+prometheus:
+  prometheusSpec:
+    serviceMonitorSelectorNilUsesHelmValues: false
+    podMonitorSelectorNilUsesHelmValues: false
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          storageClassName: "standard-rwo"
+          accessModes: ["ReadWriteOnce"]
+          resources:
+            requests:
+              storage: 10Gi
+    externalUrl: https://prometheus.classlab.pl
+    routePrefix: /
+  ingress:
+    enabled: true
+    ingressClassName: traefik
+    hosts:
+      - prometheus.classlab.pl
+    tls:
+      - secretName: prometheus-tls
+        hosts:
+          - prometheus.classlab.pl
+    paths:
+      - /
+    annotations:
+      traefik.ingress.kubernetes.io/router.entrypoints: websecure
+      traefik.ingress.kubernetes.io/router.middlewares: monitoring-prometheus-ipwhitelist@kubernetescrd
+      cert-manager.io/issuer: letsencrypt-prod
+
+alertmanager:
+  enabled: false

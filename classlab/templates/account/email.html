@@ -1,0 +1,82 @@
+{% extends "account/base.html" %}
+
+{% load i18n %}
+{% load crispy_forms_tags %}
+
+{% block head_title %}
+  {% translate "Account" %}
+{% endblock %}
+{% block inner %}
+  <h1>{% translate "E-mail Addresses" %}</h1>
+  {% if user.emailaddress_set.all %}
+    <p>{% translate 'The following e-mail addresses are associated with your account:' %}</p>
+    <form action="{% url 'account_email' %}" class="email_list" method="post">
+      {% csrf_token %}
+      <fieldset class="blockLabels form-group">
+        {% for emailaddress in user.emailaddress_set.all %}
+          <div class="form-check">
+            <label for="email_radio_{{ forloop.counter }}"
+                   class="form-check-label {% if emailaddress.primary %}primary_email{% endif %}">
+              <input class="form-check-input"
+                     id="email_radio_{{ forloop.counter }}"
+                     type="radio"
+                     name="email"
+                     {% if emailaddress.primary or user.emailaddress_set.count == 1 %}checked="checked"{% endif %}
+                     value="{{ emailaddress.email }}" />
+              {{ emailaddress.email }}
+              {% if emailaddress.verified %}
+                <span class="badge rounded-pill bg-success">{% translate "Verified" %}</span>
+              {% else %}
+                <span class="badge rounded-pill bg-danger">{% translate "Unverified" %}</span>
+              {% endif %}
+              {% if emailaddress.primary %}
+                <span class="badge rounded-pill bg-primary">{% translate "Primary" %}</span>
+              {% endif %}
+            </label>
+          </div>
+        {% endfor %}
+        <div class="form-group mt-2">
+          <button class="btn-sm  btn btn-primary" type="submit" name="action_primary">{% translate 'Make Primary' %}</button>
+          <button class="btn-sm btn btn-primary" type="submit" name="action_send">
+            {% translate 'Re-send Verification' %}
+          </button>
+          <button class="btn-sm btn btn-danger" type="submit" name="action_remove">{% translate 'Remove' %}</button>
+        </div>
+      </fieldset>
+    </form>
+  {% else %}
+    <p>
+      <strong>{% translate 'Warning:' %}</strong> {% translate "You currently do not have any e-mail address set up. You should really add an e-mail address so you can receive notifications, reset your password, etc." %}
+    </p>
+  {% endif %}
+  <!-- if number of  email address is less than 2, then show the form to add email address -->
+  {% if user.emailaddress_set.count < 2 %}
+    <div class="row mt-3">
+      <div class="col-md-12">
+        <h2>{% translate "Add E-mail Address" %}</h2>
+        <form method="post" action="{% url 'account_email' %}" class="add_email">
+          {% csrf_token %}
+          {{ form|crispy }}
+          <button class="btn btn-primary" name="action_add" type="submit">{% translate "Add E-mail" %}</button>
+        </form>
+      </div>
+    </div>
+  {% endif %}
+{% endblock %}
+{% block inline_javascript %}
+  {{ block.super }}
+  <script type="text/javascript">
+    window.addEventListener('DOMContentLoaded', function() {
+      const message = "{% translate 'Do you really want to remove the selected e-mail address?' %}";
+      const actions = document.getElementsByName('action_remove');
+      if (actions.length) {
+        actions[0].addEventListener("click", function(e) {
+          if (!confirm(message)) {
+            e.preventDefault();
+          }
+        });
+      }
+      Array.from(document.getElementsByClassName('form-group')).forEach(x => x.classList.remove('row'));
+    });
+  </script>
+{% endblock %}

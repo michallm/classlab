@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% load i18n %}
+
+{% block title %}
+  {% translate "Class List" %}
+{% endblock %}
+{% block content %}
+  <div class="container mt-3">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="d-flex justify-content-between">
+          <div class="p-2">
+            <h1>{% translate "Class List" %}</h1>
+            <p>{% translate "List of classes" %}</p>
+          </div>
+          <div class="p-2">
+            {% if perms.classes.add_class %}
+              <a href="{% url 'classes:create' %}" class="btn btn-primary">{% translate "Create Class" %}</a>
+            {% endif %}
+          </div>
+        </div>
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>{% translate "Name" %}</th>
+              <th>{% translate "Students Count" %}</th>
+              <th>{% translate "Teachers" %}</th>
+              <th>{% translate "Actions" %}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for class in page_obj %}
+              <tr>
+                <td>
+                  <a href="{% url 'classes:detail' class.class_id %}">{{ class.name }}</a>
+                  <td>{{ class.students_count }}</td>
+                  <td>
+                    {% for teacher in class.teachers.all %}<span class="badge rounded-pill bg-primary">{{ teacher }}</span>{% endfor %}
+                    <td>
+                      {% if perms.students.add_student %}
+                        <a href="{% url 'students:create' class.class_id %}"
+                           class="btn btn-primary btn-sm">{% translate "Add Student" %}</a>
+                      {% endif %}
+                      {% if perms.classes.change_class %}
+                        <a href="{% url 'classes:update' class.class_id %}"
+                           class="btn btn-primary btn-sm">{% translate "Edit" %}</a>
+                      {% endif %}
+                      {% if perms.classes.delete_class %}
+                        <a href="{% url 'classes:delete' class.class_id %}"
+                           class="btn btn-danger btn-sm">{% translate "Delete" %}</a>
+                      {% endif %}
+                    </td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+            <div class="d-flex justify-content-start mt-5">{% include 'blocks/pagination.html' %}</div>
+          </div>
+        </div>
+      </div>
+    {% endblock %}

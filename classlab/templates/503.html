@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+
+{% block title %}
+  {% translate "We'll be right back." %}
+{% endblock %}
+{% block content %}
+  <h1>{% translate "We'll be right back." %}</h1>
+  <h3>{% translate "We're temporarily offline for maintenance. Please try again later." %}</h3>
+  <p>{% translate "If you continue to see this error, please contact us." %}</p>
+{% endblock content %}

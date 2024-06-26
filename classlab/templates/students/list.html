@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% load i18n %}
+
+{% block title %}
+  {% translate "Student List" %}
+{% endblock %}
+{% block content %}
+  <div class="container mt-3">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="d-flex justify-content-between">
+          <div class="p-2">
+            <h1>{% translate "Student List" %}</h1>
+            <p>{% translate "List of students" %}</p>
+          </div>
+          <div class="p-2">
+            {% if perms.students.add_student %}
+              <a href="{% url 'students:create-with-class' %}" class="btn btn-primary">{% translate "Add Student" %}</a>
+            {% endif %}
+          </div>
+        </div>
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>{% translate "First Name" %}</th>
+              <th>{% translate "Last Name" %}</th>
+              <th>{% translate "Class" %}</th>
+              <th>{% translate "Email" %}</th>
+              <th>{% translate "Actions" %}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for student in object_list %}
+              <tr>
+                <td>{{ student.user.first_name }}</td>
+                <td>{{ student.user.last_name }}</td>
+                <td>
+                  <a href="{% url 'classes:detail' student.student_class.class_id %}">{{ student.student_class }}</a>
+                </td>
+                <td>{{ student.user.email }}</td>
+                <td class="d-flex gap-2">
+                  <!-- resend verification email if unverified -->
+                  <form action="{% url 'students:resend-confirm-email' student.student_id %}"
+                        method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="next" value="{{ request.path }}" />
+                    <button class="btn btn-primary btn-sm" type="submit" name="action_send">{% translate "Resend Verification" %}</button>
+                  </form>
+                  <a href="{% url 'students:update' student.student_id %}"
+                     class="btn btn-primary btn-sm">{% translate "Edit" %}</a>
+                  <a href="{% url 'students:delete' student.student_id %}"
+                     class="btn btn-danger btn-sm">{% translate "Delete" %}</a>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        <div class="d-flex justify-content-start mt-5">{% include 'blocks/pagination.html' %}</div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+
+{% load static i18n crispy_forms_tags %}
+
+{% block title %}
+  ClassLab - {% translate 'Education Platform for Schools' %}
+{% endblock title %}
+{% block description %}
+  {% translate 'ClassLab is a platform for schools to easily provide common services to their students and teachers.' %}
+{% endblock description %}
+{% block keywords %}
+  {% translate 'ClassLab, education, platform, school, students, teachers, mysql, wordpress, phpmyadmin' %}
+{% endblock keywords %}
+{% block css %}
+  <link rel="stylesheet" href="{% static 'css/home.css' %}" />
+{% endblock %}
+{% block content %}
+  <!-- Hero -->
+  <section id="hero" class="py-5">
+    <div class="row">
+      <div class="col-lg-6 mb-sm-5 mb-xs-5">
+        <h1 class="display-5 fw-bold lh-1 mb-3">{% trans 'Discover New Learning Possibilities' %}</h1>
+        <p class="lead">
+          {% trans 'ClassLab is an innovative educational platform that opens the doors to creative application development and enhances programming skills in schools and universities.' %}
+        </p>
+        <a href="#contact" class="btn btn-primary">{% trans 'Contact Us' %}</a>
+      </div>
+      <div class="col-lg-6">
+        <img src="{% static 'images/illustrations/educator.svg' %}"
+             alt="{% translate 'Teacher teaching students' %}"
+             class="img-fluid" />
+      </div>
+    </div>
+  </section>
+  <!-- Features -->
+  <section id="features" class="py-5">
+    <h2 class="pb-2 border-bottom">{% trans 'Features' %}</h2>
+    <div class="row g-4 py-5 row-cols-1 row-cols-lg-3">
+      <div class="feature col">
+        <div class="feature-icon d-inline-flex align-items-center justify-content-center text-primary  fs-2 mb-3">
+          <i class="fa-solid fa-window-maximize"></i>
+        </div>
+        <h3 class="fs-2">{% translate 'Intuitive Interface' %}</h3>
+        <p>{% translate 'ClassLab is designed to be easy to use and intuitive for students and teachers.' %}</p>
+      </div>
+      <div class="feature col">
+        <div class="feature-icon d-inline-flex align-items-center justify-content-center text-primary fs-2 mb-3">
+          <i class="fa-solid fa-atom"></i>
+        </div>
+        <h3 class="fs-2">{% translate 'Innovative Learning' %}</h3>
+        <p>{% translate 'ClassLab provides a new way of learning and teaching programming skills.' %}</p>
+      </div>
+      <div class="feature col">
+        <div class="feature-icon d-inline-flex align-items-center justify-content-center text-primary fs-2 mb-3">
+          <i class="fa-solid fa-rocket"></i>
+        </div>
+        <h3 class="fs-2">{% translate 'Fast and Reliable' %}</h3>
+        <p>{% translate 'ClassLab is built on the latest technologies to provide a fast and reliable experience.' %}</p>
+      </div>
+    </div>
+  </section>
+  <!-- FAQ -->
+  <section id="faq" class="py-5">
+    <h3 class="text-center mb-4 pb-2 text-primary fw-bold">{% translate 'FAQ' %}</h3>
+    <p class="text-center mb-5">{% translate 'Find the answers for the most frequently asked questions below.' %}</p>
+    <div class="row">
+      <div class="col-md-6 col-lg-4 mb-4">
+        <h6 class="mb-3 text-primary">
+          <i class="far fa-paper-plane text-primary pe-2"></i>
+          {% translate 'Does ClassLab is hosted on the cloud?' %}
+        </h6>
+        <p>
+          <strong><u>{% translate 'Yes' %}</u></strong>.
+          {% translate "The whole platform is hosted on the cloud, so you don't have to worry about anything." %}
+        </p>
+      </div>
+      <div class="col-md-6 col-lg-4 mb-4">
+        <h6 class="mb-3 text-primary">
+          <i class="fas fa-pen-alt text-primary pe-2"></i>
+          {% translate 'What application are available?' %}
+        </h6>
+        <p>
+          {% translate 'Currently, we offer the following applications: Mysql, Wordpress, PhpMyAdmin. We are working on adding more applications.' %}
+        </p>
+      </div>
+      <div class="col-md-6 col-lg-4 mb-4">
+        <h6 class="mb-3 text-primary">
+          <i class="fas fa-user text-primary pe-2"></i>
+          {% translate 'Does ClassLab offer a free trial?' %}
+        </h6>
+        <p>
+          <strong><u>{% translate 'Yes' %}</u></strong>.
+          {% translate 'Our platform is still in development phase, so we offer a free trial for schools and universities.' %}
+        </p>
+      </div>
+    </div>
+  </section>
+  <!--Section: FAQ-->
+  <!-- Contact -->
+  <section class="contact py-4" id="contact">
+    <div class="row">
+      <div class="col-md-12">
+        <h2>{% translate "Contact" %}</h2>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <form action="" method="post">
+          {% csrf_token %}
+          {{ form | crispy }}
+          <button type="submit" class="btn btn-primary">{% translate "Send" %}</button>
+        </form>
+      </div>
+      <div class="col-md-6 d-none d-md-block mb-5">
+        <img src="{% static 'images/illustrations/letter.svg' %}"
+             alt="contact image"
+             class="img-fluid" />
+      </div>
+    </div>
+  </section>
+{% endblock %}

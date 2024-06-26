@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+
+{% block title %}
+  {% translate "Page not found" %}
+{% endblock %}
+{% block content %}
+  <h1>{% translate "Page not found" %}</h1>
+  <p>
+    {% if exception %}
+      {{ exception }}
+    {% else %}
+      {% translate "This is not the page you were looking for." %}
+    {% endif %}
+  </p>
+{% endblock content %}

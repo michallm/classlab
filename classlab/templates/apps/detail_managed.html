@@ -1,0 +1,233 @@
+{% extends 'base.html' %}
+
+{% load static i18n %}
+
+{% block title %}
+  {% translate "Managed Apps" %}
+{% endblock %}
+{% block css %}
+  <style>
+    .fa-copy {
+      cursor: pointer;
+    }
+
+    icon-eye-open {
+      z-index: 1000;
+    }
+
+    fa-eye {
+      z-index: 1000;
+    }
+  </style>
+{% endblock %}
+{% block content %}
+  <div class="container mt-3">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="d-flex justify-content-between">
+          <div class="p-2">
+            <h1>{{ object.name }}</h1>
+            <p>{% translate "List of apps instances assigned to this class" %}</p>
+          </div>
+        </div>
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>{% translate "First Name" %}</th>
+              <th>{% translate "Last Name" %}</th>
+              <th>{% translate "Category" %}</th>
+              <th>{% translate "Status" %}</th>
+              <th>{% translate "Address" %}</th>
+              <th>{% translate "Actions" %}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for app in apps %}
+              <tr>
+                <td>{{ app.user.first_name }}</td>
+                <td>{{ app.user.last_name }}</td>
+                <td>
+                  <span class="badge rounded-pill bg-primary">{{ app.category }}</span>
+                </td>
+                <td>
+                  <span class="badge rounded-pill bg-success">{{ app.verbose_status }}</span>
+                </td>
+                <td>
+                  <span>
+                    {% if app.url %}
+                      {% if not app.template.expose_node_port and app.status == 'running' %}
+                        <a href="{{ app.url }}" target="_blank">{{ app.url }}</a>
+                      {% else %}
+                        {{ app.url }}
+                        <i class="fa-solid fa-copy" onclick="copyToClipboard('{{ app.url }}')"></i>
+                      {% endif %}
+                    {% endif %}
+                  </span>
+                </td>
+                <td>
+                  <!-- button that displays modal with help command to run app that user can copy by pressing button on modal -->
+                  {% if app.run_command is not None %}
+                    <button type="button"
+                            class="btn btn-primary btn-sm"
+                            data-bs-toggle="modal"
+                            data-bs-target="#runCommandModal{{ app.app_id }}">{% translate "Run Command" %}</button>
+                    <!-- Modal -->
+                    <div class="modal"
+                         id="runCommandModal{{ app.app_id }}"
+                         tabindex="-1"
+                         aria-labelledby="runCommandModalLabel{{ app.app_id }}"
+                         aria-hidden="true">
+                      <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title">{% translate "Run Command" %}</h5>
+                            <button type="button"
+                                    class="btn-close"
+                                    data-bs-dismiss="modal"
+                                    aria-label="Close">
+                              <span aria-hidden="true"></span>
+                            </button>
+                          </div>
+                          <div class="modal-body">
+                            <p>{{ app.run_command }}</p>
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button"
+                                    class="btn btn-primary"
+                                    onclick="copyToClipboard('{{ app.run_command }}')">{% translate "Copy" %}</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{% translate "Close" %}</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  {% endif %}
+                  {% if app.contain_student_only_generated_values or app.contain_teacher_only_generated_values %}
+                    <button type="button"
+                            class="btn btn-primary btn-sm"
+                            data-bs-toggle="modal"
+                            data-bs-target="#detailsModal{{ app.app_id }}">{% translate "Details" %}</button>
+                    <!-- Modal -->
+                    <div class="modal"
+                         id="detailsModal{{ app.app_id }}"
+                         tabindex="-1"
+                         aria-labelledby="detailsModal{{ app.app_id }}"
+                         aria-hidden="true">
+                      <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title">{% translate "Details" %}</h5>
+                            <button type="button"
+                                    class="btn-close"
+                                    data-bs-dismiss="modal"
+                                    aria-label="Close">
+                              <span aria-hidden="true"></span>
+                            </button>
+                          </div>
+                          <div class="modal-body">
+                            <h6>{% translate "Konfiguracja" %}</h6>
+                            <p>
+                              {% translate "The values ​​given below have been generated. If you manually changed the password, the variables listed below will not be updated." %}
+                            </p>
+                            <div class="table-responsive">
+                              <table class="table table-striped">
+                                <thead>
+                                  <tr>
+                                    <th>{% translate "Variable" %}</th>
+                                    <th>{% translate "Value" %}</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  {% if request.user.is_student %}
+                                    {% for key, data in app.get_generated_student_values.items %}
+                                      <tr>
+                                        <td>{{ key }}</td>
+                                        <td>
+                                          {% if data.secret %}
+                                            <input type="password"
+                                                   class="form-control"
+                                                   value="{{ data.value }}"
+                                                   readonly
+                                                   data-toggle="password"
+                                                   title="{% translate "Click to copy" %}"
+                                                   onclick="copyToClipboard('{{ data.value }}')" />
+                                          {% else %}
+                                            <input type="text"
+                                                   class="form-control"
+                                                   value="{{ data.value }}"
+                                                   readonly
+                                                   title="{% translate "Click to copy" %}"
+                                                   onclick="copyToClipboard('{{ data.value }}')" />
+                                          {% endif %}
+                                        </td>
+                                      </tr>
+                                    {% endfor %}
+                                  {% else %}
+                                    {% for key, data in app.get_generated_teacher_values.items %}
+                                      <tr>
+                                        <td>{{ key }}</td>
+                                        <td>
+                                          {% if data.secret %}
+                                            <input type="password"
+                                                   class="form-control"
+                                                   value="{{ data.value }}"
+                                                   readonly
+                                                   data-toggle="password"
+                                                   title="{% translate "Click to copy" %}"
+                                                   onclick="copyToClipboard('{{ data.value }}')" />
+                                          {% else %}
+                                            <input type="text"
+                                                   class="form-control"
+                                                   value="{{ data.value }}"
+                                                   readonly
+                                                   title="{% translate "Click to copy" %}"
+                                                   onclick="copyToClipboard('{{ data.value }}')" />
+                                          {% endif %}
+                                        </td>
+                                      </tr>
+                                    {% endfor %}
+                                  {% endif %}
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{% translate "Close" %}</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  {% endif %}
+                  {#<a href="#" class="btn btn-primary btn-sm">{% translate "Details" %}</a>#}
+                  {% if app.status == 'stopped' %}
+                    <a href="{% url 'classes:start_app' object.assigned_class.class_id object.managed_app_id app.app_id %}"
+                       class="btn btn-success btn-sm">{% translate "Start" %}</a>
+                  {% elif app.status == 'running' %}
+                    <a href="{% url 'classes:stop_app' object.assigned_class.class_id object.managed_app_id app.app_id %}"
+                       class="btn btn-danger btn-sm">{% translate "Stop" %}</a>
+                  {% endif %}
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+{% block inline_javascript %}
+  <script>
+    function showCopiedAlert() {
+      alert("{% translate 'Copied to clipboard' %}");
+    }
+
+    function copyToClipboard(text) {
+      console.log('copying text: ' + text);
+      window.navigator.clipboard.writeText(text).then(function() {
+        showCopiedAlert();
+      }, function(err) {
+        console.error('Async: Could not copy text: ', err);
+      });
+
+    }
+  </script>
+{% endblock %}

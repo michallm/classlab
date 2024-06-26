@@ -1,0 +1,431 @@
+{% extends 'base.html' %}
+
+{% load static i18n %}
+
+{% block title %}
+  {% translate "My Applications" %}
+{% endblock %}
+{% block css %}
+  <style>
+    .fa-copy {
+      cursor: pointer;
+    }
+
+    icon-eye-open {
+      z-index: 1000;
+    }
+
+    fa-eye {
+      z-index: 1000;
+    }
+  </style>
+{% endblock %}
+{% block content %}
+  <div class="container mt-3">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="d-flex justify-content-between">
+          <div class="p-2">
+            <h1>{% translate "My Applications" %}</h1>
+            <p>{% translate "Here you can see all your applications" %}</p>
+          </div>
+          <div class="">
+            <a href="{% url 'apps:create' %}" class="btn btn-primary">
+              <i class="fa-solid fa-plus"></i>
+            {% translate "Create Application" %}</a>
+          </div>
+        </div>
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>{% translate "Name" %}</th>
+              <th>{% translate "Category" %}</th>
+              <th>{% translate "Status" %}</th>
+              <th>{% translate "Address" %}</th>
+              <th>{% translate "Actions" %}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for app in apps %}
+              <tr>
+                <td>
+                  {{ app.name }}
+                  {% if app.managed_app %}
+                    <span class="badge rounded-pill bg-primary">{% translate "Managed" %}</span>
+                  {% endif %}
+                  <td>
+                    <span class="badge rounded-pill bg-primary">{{ app.category }}</span>
+                  </td>
+                  <td>
+                    <span class="badge rounded-pill bg-success"
+                          id="status{{ app.app_id }}"
+                          data-app-id="{{ app.app_id }}">
+                      <div class="spinner-border spinner-border-sm" role="status"></div>
+                    </span>
+                  </td>
+                  <td>
+                    <span id="url{{ app.app_id }}"
+                          data-app-id="{{ app.app_id }}"
+                          data-url=""
+                          {% if app.template.expose_node_port %}data-expose-port="true"{% endif %}>
+                      {% translate "Loading..." %}
+                    </span>
+                    <i class="fa-solid fa-copy"
+                       onclick="copyUrlToClipboard('{{ app.app_id }}')"></i>
+                  </td>
+                  <td>
+                    {% if app.template.run_command_template %}
+                      <button type="button"
+                              class="btn btn-primary btn-sm"
+                              data-bs-toggle="modal"
+                              data-bs-target="#runCommandModal{{ app.app_id }}"
+                              onclick="fetchRunCommand('{{ app.app_id }}')">{% translate "Run Command" %}</button>
+                      <!-- Modal -->
+                      <div class="modal"
+                           id="runCommandModal{{ app.app_id }}"
+                           tabindex="-1"
+                           aria-labelledby="runCommandModalLabel{{ app.app_id }}"
+                           aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title">{% translate "Run Command" %}</h5>
+                              <button type="button"
+                                      class="btn-close"
+                                      data-bs-dismiss="modal"
+                                      aria-label="Close">
+                                <span aria-hidden="true"></span>
+                              </button>
+                            </div>
+                            <div class="modal-body">
+                              <p id="runCommandModalLabel{{ app.app_id }}">{% translate "Loading..." %}</p>
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button"
+                                      class="btn btn-primary"
+                                      onclick="copyRunCommandToClipboard('{{ app.app_id }}')">
+                                {% translate "Copy" %}
+                              </button>
+                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{% translate "Close" %}</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    {% endif %}
+                    {% if app.details %}
+                      <button type="button"
+                              class="btn btn-primary btn-sm"
+                              data-bs-toggle="modal"
+                              data-bs-target="#detailsModal{{ app.app_id }}">{% translate "Details" %}</button>
+                      <!-- Modal -->
+                      <div class="modal"
+                           id="detailsModal{{ app.app_id }}"
+                           tabindex="-1"
+                           aria-labelledby="detailsModal{{ app.app_id }}"
+                           aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title">{% translate "Details" %}</h5>
+                              <button type="button"
+                                      class="btn-close"
+                                      data-bs-dismiss="modal"
+                                      aria-label="Close">
+                                <span aria-hidden="true"></span>
+                              </button>
+                            </div>
+                            <div class="modal-body">
+                              {% if app.contain_generated_values %}
+                                <h6>{% translate "Konfiguracja" %}</h6>
+                                <p>
+                                  {% translate "The values ​​given below have been generated. If you manually changed the password, the variables listed below will not be updated." %}
+                                </p>
+                                <div class="table-responsive">
+                                  <table class="table table-striped">
+                                    <thead>
+                                      <tr>
+                                        <th>{% translate "Variable" %}</th>
+                                        <th>{% translate "Value" %}</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      {% for key, data in app.get_generated_values.items %}
+                                        <tr>
+                                          <td>{{ key }}</td>
+                                          <td>
+                                            <input type="password"
+                                                   class="form-control"
+                                                   value="{{ data.value }}"
+                                                   readonly
+                                                   data-toggle="password"
+                                                   title="{% translate "Click to copy" %}"
+                                                   onclick="copyToClipboard('{{ data.value }}')" />
+                                          </td>
+                                        </tr>
+                                      {% endfor %}
+                                    </tbody>
+                                  </table>
+                                </div>
+                              {% endif %}
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{% translate "Close" %}</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    {% endif %}
+                    <button class="btn btn-success btn-sm d-none"
+                            id="start{{ app.app_id }}"
+                            data-app-id="{{ app.app_id }}"
+                            onclick="startApp(event)">{% translate "Start" %}</button>
+                    <button class="btn btn-warning btn-sm d-none"
+                            id="stop{{ app.app_id }}"
+                            data-app-id="{{ app.app_id }}"
+                            onclick="stopApp(event)">{% translate "Stop" %}</button>
+                    <a href="{% url 'apps:delete' app.app_id %}"
+                       class="btn btn-danger btn-sm">{% translate "Delete" %}</a>
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    {% csrf_token %}
+  {% endblock %}
+  {% block inline_javascript %}
+    <script>
+      function showCopiedAlert() {
+        alert("{% translate 'Copied to clipboard' %}");
+      }
+
+      function copyToClipboard(text) {
+        console.log('copying text: ' + text);
+        window.navigator.clipboard.writeText(text).then(function() {
+          showCopiedAlert();
+        }, function(err) {
+          console.error('Async: Could not copy text: ', err);
+        });
+      }
+
+      function copyRunCommandToClipboard(appId) {
+        const runCommand = document.getElementById('runCommandModalLabel' + appId).innerHTML;
+        copyToClipboard(runCommand);
+      }
+
+      function makeUrlClickable(appId) {
+        const url = document.getElementById('url' + appId);
+        const urlText = url.dataset.url;
+        url.innerHTML = '<a href="' + urlText + '" target="_blank">' + urlText + '</a>';
+      }
+
+      async function fetchAppStatus(appId) {
+        const response = await fetch(`/apps/${appId}/status/`);
+        const data = await response.json();
+        return data;
+      }
+
+      function updateAppStatus(appId, data) {
+        const status = document.getElementById('status' + appId);
+        status.innerHTML = data.verbose_status;
+      }
+
+      function updateAppActions(appId, data) {
+        const start = document.getElementById('start' + appId);
+        const stop = document.getElementById('stop' + appId);
+        const status = data.status;
+
+        if (status === 'running') {
+          start.classList.add('d-none');
+          stop.classList.remove('d-none');
+        } else if (status === 'stopped') {
+          start.classList.remove('d-none');
+          stop.classList.add('d-none');
+        }
+      }
+
+      function updateAppUrl(appId, url, data) {
+        const urlElement = document.getElementById('url' + appId);
+        urlElement.innerHTML = url;
+
+        if (urlElement.dataset.exposePort === 'true') {
+          return
+        }
+
+        if (data.status === 'running') {
+          makeUrlClickable(appId);
+        }
+
+      }
+
+      function copyUrlToClipboard(appId) {
+        const url = document.getElementById('url' + appId);
+        const urlText = url.dataset.url;
+        copyToClipboard(urlText);
+      }
+
+      function fetchAppUrl(appId) {
+        return fetch(`/apps/${appId}/url/`).then(
+          (response) => response.json()
+        ).then(
+          (data) => {
+            if (data.status === 'success') {
+              const url = data.url;
+              return url;
+            } else {
+              alert(data.message);
+            }
+          }
+        );
+      }
+
+      const storedStatuses = {};
+
+      function updateAppData(appId) {
+        const status = storedStatuses[appId];
+        if (status && (status.status === 'running' || status.status === 'stopped')) {
+          return;
+        }
+
+        const fetchAppStatusPromise = new Promise((resolve, reject) => {
+          fetchAppStatus(appId).then(
+            (data) => {
+              resolve(data);
+            }
+          );
+        });
+
+        const fetchAppUrlPromise = new Promise((resolve, reject) => {
+          fetchAppUrl(appId).then(
+            (url) => {
+              const urlElement = document.getElementById('url' + appId);
+              urlElement.dataset.url = url;
+              resolve(url);
+            }
+          );
+        });
+
+        Promise.all([fetchAppStatusPromise, fetchAppUrlPromise]).then(
+          (values) => {
+            const data = values[0];
+            const url = values[1];
+            storedStatuses[appId] = data;
+            updateAppStatus(appId, data);
+            updateAppActions(appId, data);
+            updateAppUrl(appId, url, data);
+          }
+        );
+      }
+
+      function updateAllAppStatuses() {
+        const appIds = Array.from(document.querySelectorAll('[data-app-id]')).map(el => el.dataset.appId);
+        appIds.forEach(appId => {
+          updateAppData(appId);
+        });
+      }
+
+      updateAllAppStatuses();
+
+      const interval = setInterval(updateAllAppStatuses, 10000);
+
+      const intermediedStatuses = {
+        'starting': '{% translate "Starting" %}',
+        'stopping': '{% translate "Stopping" %}',
+      };
+
+      // Stop interval when user leaves the page
+      window.addEventListener('beforeunload', () => {
+        clearInterval(interval);
+      });
+
+      function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+          const cookies = document.cookie.split(';');
+          for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+              cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+              break;
+            }
+          }
+        }
+        return cookieValue;
+      }
+      // const csrftoken = getCookie('csrftoken');
+      const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+      function startApp(e) {
+        e.preventDefault();
+        const appId = e.target.dataset.appId;
+        fetch(`/apps/${appId}/start/`, {
+          method: 'POST',
+          headers: {
+            'X-CSRFToken': csrftoken
+          }
+        }).then(
+          (response) => response.json()
+        ).then(
+          (data) => {
+            if (data.status === 'success') {
+              storedStatuses[appId] = {
+                status: 'starting',
+                verbose_status: intermediedStatuses['starting']
+              }
+              updateAppStatus(appId, storedStatuses[appId])
+            } else {
+              alert(data.message);
+            }
+          }
+        );
+      }
+
+      function stopApp(e) {
+        e.preventDefault();
+        const appId = e.target.dataset.appId;
+        fetch(`/apps/${appId}/stop/`, {
+          method: 'POST',
+          headers: {
+            'X-CSRFToken': csrftoken
+          }
+        }).then(
+          (response) => response.json()
+        ).then(
+          (data) => {
+            if (data.status === 'success') {
+              storedStatuses[appId] = {
+                status: 'stopping',
+                verbose_status: intermediedStatuses['stopping']
+              }
+              updateAppStatus(appId, storedStatuses[appId])
+            } else {
+              alert(data.message);
+            }
+          }
+        );
+      }
+
+      function fetchRunCommand(appId) {
+        return fetch(`/apps/${appId}/run-command/`, {
+          headers: {
+            'X-CSRFToken': csrftoken
+          }
+        }).then(
+          (response) => response.json()
+        ).then(
+          (data) => {
+            if (data.status === 'success') {
+              const runCommand = data.command;
+              const runCommandModalLabel = document.getElementById('runCommandModalLabel' + appId);
+              runCommandModalLabel.innerHTML = runCommand;
+            } else {
+              alert(data.message);
+            }
+          }
+        );
+      }
+    </script>
+  {% endblock %}

@@ -1,0 +1,8 @@
+User-Agent: *
+Allow: /
+Disallow: /users
+Disallow: /administrator
+Disallow: /apps
+Disallow: /student
+Disallow: /teacher
+Disallow: /class

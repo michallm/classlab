@@ -1,0 +1,43 @@
+deployment:
+  replicas: 1
+
+ports:
+  web:
+    redirectTo: websecure
+
+metrics:
+  prometheus:
+    service:
+      enabled: true
+      labels: {}
+      annotations: {}
+    disableAPICheck: false
+    serviceMonitor:
+      metricRelabelings: []
+      relabelings: []
+      jobLabel: traefik
+      interval: 30s
+      honorLabels: true
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 50Mi
+  limits:
+    cpu: 300m
+    memory: 150Mi
+
+service:
+  spec:
+    externalTrafficPolicy: Local
+
+# affinity:
+#   podAntiAffinity:
+#     requiredDuringSchedulingIgnoredDuringExecution:
+#     - labelSelector:
+#         matchExpressions:
+#         - key: app
+#           operator: In
+#           values:
+#           - traefik
+#       topologyKey: kubernetes.io/hostname

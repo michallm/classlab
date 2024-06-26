@@ -1,0 +1,16 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-keda-egress
+  namespace: keda
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: keda-operator
+  policyTypes:
+    - Egress
+    - Ingress
+  egress:
+    - {}
+  ingress:
+    - {}

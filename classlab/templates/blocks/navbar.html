@@ -1,0 +1,76 @@
+{% load i18n %}
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/">ClassLab</a>
+    <button class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbar"
+            aria-controls="navbar"
+            aria-expanded="false"
+            aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbar">
+      <ul class="navbar-nav ms-auto">
+        {% if request.user.is_authenticated %}
+          {% if request.user.is_administrator %}
+            <li class="nav-item">
+              <a class="nav-link {% if request.resolver_match.view_name == 'administrators:dashboard' %}active{% endif %} "
+                 href="{% url 'administrators:dashboard' %}">{% translate "Dashboard" %}</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link {% if request.resolver_match.view_name == 'teachers:list' %}active{% endif %} "
+                 href="{% url 'teachers:list' %}">{% translate "Teachers" %}</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link {% if request.resolver_match.view_name == 'students:list' %}active{% endif %} "
+                 href="{% url 'students:list' %}">{% translate "Students" %}</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link {% if request.resolver_match.view_name == 'administrators:class-list' %}active{% endif %} "
+                 href="{% url 'classes:list' %}">{% translate "Classes" %}</a>
+            </li>
+          {% endif %}
+          {% if request.user.is_teacher %}
+            <li class="nav-item">
+              <a class="nav-link {% if request.resolver_match.view_name == 'apps:list' %}active{% endif %} "
+                 href="{% url 'apps:list' %}">{% translate "Applications" %}</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link {% if request.resolver_match.view_name == 'administrators:class-list' %}active{% endif %} "
+                 href="{% url 'classes:list' %}">{% translate "Classes" %}</a>
+            </li>
+          {% endif %}
+          {% if request.user.is_student %}
+            <li class="nav-item">
+              <a class="nav-link {% if request.resolver_match.view_name == 'apps:list' %}active{% endif %} "
+                 href="{% url 'apps:list' %}">{% translate "Applications" %}</a>
+            </li>
+          {% endif %}
+          <li class="nav-item">
+            <a class="nav-link"
+              {% if request.resolver_match.view_name == 'users:detail' %}active{% endif %}
+            " href="{% url 'users:detail' request.user.user_id %}">{% translate "My Profile" %}</a>
+          </li>
+          <li class="nav-item">
+            {# URL provided by django-allauth/account/urls.py #}
+            <a class="nav-link" href="{% url 'account_logout' %}">{% translate "Sign Out" %}</a>
+          </li>
+        {% else %}
+          {% if ACCOUNT_ALLOW_REGISTRATION %}
+            <li class="nav-item">
+              {# URL provided by django-allauth/account/urls.py #}
+              <a id="sign-up-link" class="nav-link" href="{% url 'account_signup' %}">{% translate "Sign Up" %}</a>
+            </li>
+          {% endif %}
+          <li class="nav-item">
+            {# URL provided by django-allauth/account/urls.py #}
+            <a id="log-in-link" class="nav-link" href="{% url 'account_login' %}">{% translate "Sign In" %}</a>
+          </li>
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+</nav>

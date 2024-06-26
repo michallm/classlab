@@ -1,0 +1,447 @@
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ app_id }}
+  namespace: {{ namespace }}
+  labels:
+    app: {{ app_id }}
+    user: {{ user_id }}
+    tier: mysql
+type: Opaque
+data:
+  mysql_root_password: {{ mysql_root_password }}
+  mysql_user: {{ mysql_user }}
+  mysql_password: {{ mysql_password }}
+  mysql_database: {{ mysql_database }}
+immutable: true
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: {{ namespace }}
+  name: {{ app_id }}-mysql
+  labels:
+    app: {{ app_id }}
+    user: {{ user_id }}
+    tier: mysql
+spec:
+  ports:
+    - protocol: TCP
+      port: 3306
+      targetPort: 3306
+  selector:
+    app: {{ app_id }}
+    user: {{ user_id }}
+    tier: mysql
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  namespace: {{ namespace }}
+  name: {{ app_id }}
+  labels:
+    app: {{ app_id }}
+    user: {{ user_id }}
+    tier: mysql
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: {{ namespace }}
+  name: {{ app_id }}-mysql
+  labels:
+    app: {{ app_id }}
+    user: {{ user_id }}
+    tier: mysql
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ app_id }}
+      user: {{ user_id }}
+      tier: mysql
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: {{ app_id }}
+        user: {{ user_id }}
+        tier: mysql
+    spec:
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 3000
+        fsGroup: 2000
+        seccompProfile:
+          type: RuntimeDefault
+        runAsNonRoot: true
+      containers:
+        - name: {{ app_id }}
+          image: mysql:8
+          ports:
+            - containerPort: 3306
+              name: mysql
+          env:
+            - name: MYSQL_ROOT_PASSWORD_FILE
+              value: /etc/secrets/mysql_root_password
+            - name: MYSQL_USER
+              valueFrom:
+                secretKeyRef:
+                  name: {{ app_id }}
+                  key: mysql_user
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ app_id }}
+                  key: mysql_password
+            - name: MYSQL_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: {{ app_id }}
+                  key: mysql_database
+          volumeMounts:
+            - name: secret-volume
+              mountPath: /etc/secrets
+              readOnly: true
+            - name: {{ app_id }}
+              mountPath: /var/lib/mysql
+          resources:
+            limits:
+              cpu: "400m"
+              ephemeral-storage: "2Gi"
+              memory: "500Mi"
+            requests:
+              cpu: "100m"
+              ephemeral-storage: "2Gi"
+              memory: "400Mi"
+          livenessProbe:
+            exec:
+              command:
+                - mysqladmin
+                - ping
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 1
+            failureThreshold: 3
+            successThreshold: 1
+          readinessProbe:
+            exec:
+              command:
+                - mysqladmin
+                - ping
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 1
+            failureThreshold: 3
+            successThreshold: 1
+          startupProbe:
+            exec:
+              command:
+                - mysqladmin
+                - ping
+            initialDelaySeconds: 15
+            periodSeconds: 10
+            timeoutSeconds: 1
+            failureThreshold: 10
+            successThreshold: 1
+          securityContext:
+            allowPrivilegeEscalation: false
+            runAsNonRoot: true
+            capabilities:
+              drop:
+                - ALL
+      volumes:
+        - name: secret-volume
+          secret:
+            secretName: {{ app_id }}
+        - name: {{ app_id }}
+          persistentVolumeClaim:
+            claimName: {{ app_id }}
+      tolerations:
+        - key: spot
+          operator: Equal
+          value: 'true'
+          effect: NoSchedule
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: cloud.google.com/gke-nodepool
+                    operator: In
+                    values:
+                      - spot-pool
+
+# phpmyadmin
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: {{ namespace }}
+  name: {{ app_id }}-phpmyadmin
+  labels:
+    app: {{ app_id }}
+    user: {{ user_id }}
+    tier: phpmyadmin
+spec:
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+  selector:
+    app: {{ app_id }}
+    user: {{ user_id }}
+    tier: phpmyadmin
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: {{ namespace }}
+  name: {{ app_id }}-phpmyadmin
+  labels:
+    app: {{ app_id }}
+    user: {{ user_id }}
+    tier: phpmyadmin
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ app_id }}
+      user: {{ user_id }}
+      tier: phpmyadmin
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: {{ app_id }}
+        user: {{ user_id }}
+        tier: phpmyadmin
+    spec:
+      securityContext:
+        fsGroup: 1001
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: {{ app_id }}-phpmyadmin
+          image: bitnami/phpmyadmin
+          ports:
+            - containerPort: 80
+              name: phpmyadmin
+          env:
+            - name: DATABASE_HOST
+              value: {{ app_id }}-mysql
+            - name: DATABASE_PORT_NUMBER
+              value: "3306"
+            - name: PHPMYADMIN_ABSOLUTE_URI
+              value: https://{{ app_id }}.apps.classlab.pl
+          livenessProbe:
+            initialDelaySeconds: 30
+            timeoutSeconds: 30
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 6
+            httpGet:
+              path: /
+              port: 8080
+          readinessProbe:
+            initialDelaySeconds: 30
+            timeoutSeconds: 30
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 6
+            httpGet:
+              path: /
+              port: 8080
+          startupProbe:
+            initialDelaySeconds: 10
+            timeoutSeconds: 5
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 6
+            httpGet:
+              path: /
+              port: 8080
+          securityContext:
+            allowPrivilegeEscalation: false
+            runAsUser: 1001
+            runAsNonRoot: true
+            capabilities:
+              drop:
+                - ALL
+          resources:
+            limits:
+              cpu: "200m"
+              memory: "200Mi"
+            requests:
+              cpu: "20m"
+              memory: "150Mi"
+      tolerations:
+        - key: spot
+          operator: Equal
+          value: 'true'
+          effect: NoSchedule
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: cloud.google.com/gke-nodepool
+                    operator: In
+                    values:
+                      - spot-pool
+
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: {{ app_id }}-phpmyadmin
+  namespace: {{ namespace }}
+  annotations:
+    cloud.google.com/neg: '{"ingress": true}'
+spec:
+  entryPoints:
+    - web
+    - websecure
+  routes:
+    - match: Host(`{{ app_id }}.apps.classlab.pl`)
+      kind: Rule
+      services:
+        - name: {{ app_id }}-phpmyadmin
+          port: 8080
+
+
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ app_id }}-phpmyadmin
+  namespace: {{ namespace }}
+spec:
+  podSelector:
+    matchLabels:
+      app: {{ app_id }}
+      user: {{ user_id }}
+      tier: phpmyadmin
+  policyTypes:
+    - Ingress
+    - Egress
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              name: traefik
+  egress:
+    - to:
+        - podSelector:
+            matchLabels:
+              app: {{ app_id }}
+              user: {{ user_id }}
+              tier: mysql
+        - ipBlock:
+            cidr: 0.0.0.0/0
+            except:
+              - 10.0.0.0/16
+              - 10.1.0.0/16
+              - 10.2.0.0/16
+    - ports:
+        - port: 53
+          protocol: TCP
+        - port: 53
+          protocol: UDP
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ app_id }}-mysql
+  namespace: {{ namespace }}
+spec:
+  podSelector:
+    matchLabels:
+      app: {{ app_id }}
+      user: {{ user_id }}
+      tier: mysql
+  policyTypes:
+    - Ingress
+    - Egress
+  ingress:
+    - {}
+  egress:
+   - {}
+
+---
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: {{ app_id }}-phpmyadmin
+  namespace: {{ namespace }}
+spec:
+  scaleTargetRef:
+    name: {{ app_id }}-phpmyadmin
+  pollingInterval: 15
+  cooldownPeriod: 600
+  minReplicaCount: 0
+  maxReplicaCount: 1
+  advanced:
+    horizontalPodAutoscalerConfig:
+      behavior:
+        scaleDown:
+          stabilizationWindowSeconds: 600
+          policies:
+          - type: Percent
+            value: 100
+            periodSeconds: 15
+        scaleUp:
+          selectPolicy: Disabled
+  triggers:
+    - type: prometheus
+      metricType: Value
+      metadata:
+        serverAddress: http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090
+        query: max(max(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{pod=~"{{app_id}}-phpmyadmin.*", namespace="{{ namespace }}" } * 100) > bool 1 or (time() - kube_pod_created{pod=~"{{app_id}}-phpmyadmin.*", namespace="{{ namespace }}"} < bool 300))
+        threshold: "1"
+        ignoreNullValues: "false"
+
+---
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: {{ app_id }}-mysql
+  namespace: {{ namespace }}
+spec:
+  scaleTargetRef:
+    name: {{ app_id }}-mysql
+  pollingInterval: 15
+  cooldownPeriod: 600
+  minReplicaCount: 0
+  maxReplicaCount: 1
+  advanced:
+    horizontalPodAutoscalerConfig:
+      behavior:
+        scaleDown:
+          stabilizationWindowSeconds: 600
+          policies:
+          - type: Percent
+            value: 100
+            periodSeconds: 15
+        scaleUp:
+          selectPolicy: Disabled
+  triggers:
+    - type: prometheus
+      metricType: Value
+      metadata:
+        serverAddress: http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090
+        query: max(max(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{pod=~"{{app_id}}-phpmyadmin.*", namespace="{{ namespace }}" } * 100) > bool 1 or (time() - kube_pod_created{pod=~"{{app_id}}-phpmyadmin.*", namespace="{{ namespace }}"} < bool 300))
+        threshold: "1"
+        ignoreNullValues: "false"

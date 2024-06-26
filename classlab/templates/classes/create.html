@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% load i18n static crispy_forms_tags %}
+
+{% block title %}
+  {% translate "Create Class" %}
+{% endblock %}
+{% block css %}{{ form.media.css }}{% endblock %}
+{% block content %}
+  <div class="container mt-3">
+    <div class="row">
+      <div class="col-md-6">
+        <h1>{% translate "Create Class" %}</h1>
+        <p>{% translate "Fill in the form to create a new class." %}</p>
+        <form method="POST">
+          {% csrf_token %}
+          {{ form | crispy }}
+          <button class="btn btn-primary" type="submit">{% translate "Submit" %}</button>
+        </form>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+{% block inline_javascript %}{{ form.media.js }}{% endblock %}

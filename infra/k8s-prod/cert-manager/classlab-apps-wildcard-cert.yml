@@ -1,0 +1,12 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: classlab-apps-wildcard
+  namespace: default
+spec:
+  secretName: classlab-apps-wildcard
+  issuerRef:
+    name: letsencrypt-production
+    kind: ClusterIssuer
+  dnsNames:
+  - "*.apps.classlab.pl"

@@ -1,0 +1,99 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: technr2
+  name: whoami
+  labels:
+    app: whoami
+    user: jankow
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: whoami
+      user: jankow
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: whoami
+        user: jankow
+    spec:
+      containers:
+        - name: whoami
+          image: traefik/whoami
+          ports:
+            - containerPort: 80
+              name: whoami
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: technr2
+  name: whoami
+  labels:
+    app: whoami
+    user: jankow
+spec:
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  selector:
+    app: whoami
+    user: jankow
+
+# ---
+# apiVersion: keda.sh/v1alpha1
+# kind: ScaledObject
+# metadata:
+#   name: whoami
+#   namespace: technr2
+# spec:
+#   scaleTargetRef:
+#     name: whoami
+#   pollingInterval: 15
+#   cooldownPeriod: 600
+#   minReplicaCount: 0
+#   maxReplicaCount: 1
+#   advanced:
+#     horizontalPodAutoscalerConfig:
+#       behavior:
+#         scaleDown:
+#           stabilizationWindowSeconds: 600
+#           policies:
+#           - type: Percent
+#             value: 100
+#             periodSeconds: 15
+#         scaleUp:
+#           selectPolicy: Disabled
+#   triggers:
+#     - type: prometheus
+#       metricType: Value
+#       metadata:
+#         serverAddress: http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090
+#         query: max(max(sum(rate(container_fs_reads_total{container!="",job="kubelet",metrics_path="/metrics/cadvisor",pod=~"whoami.*"}[2m30s])+rate(container_fs_writes_total{container!="",job="kubelet",metrics_path="/metrics/cadvisor",pod=~"whoami.*"}[2m30s]))) * 100 > bool 10 or (time() - kube_pod_created{pod=~"whoami.*", namespace="technr2"} < bool 300))
+#         threshold: "1"
+#         ignoreNullValues: "false"
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: whoami
+  namespace: technr2
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: whoami.apps.classlab.test
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: whoami
+            port:
+              number: 80

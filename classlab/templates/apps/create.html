@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% load i18n crispy_forms_tags %}
+
+{% block title %}
+  {% translate "Create Application" %}
+{% endblock %}
+{% block content %}
+  <div class="container mt-3">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <h1>{% translate "Create Application" %}</h1>
+        <p>{% translate "Select app template and type a name for your app." %}</p>
+        <form method="POST">
+          {% csrf_token %}
+          {{ wizard.management_form }}
+          {{ wizard.form|crispy }}
+          <button class="btn btn-primary" type="submit">{% translate "Submit" %}</button>
+        </form>
+      </div>
+    </div>
+  </div>
+{% endblock %}

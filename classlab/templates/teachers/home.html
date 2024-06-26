@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% load static i18n %}
+
+{% block title %}
+  {% translate "My Applications" %}
+{% endblock %}
+{% block content %}
+  <div class="container mt-3">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="d-flex justify-content-between">
+          <div class="p-2">
+            <h1>{% translate "My Applications" %}</h1>
+            <p>{% translate "Here you can see the applications that have been assigned to you." %}</p>
+          </div>
+          <div class="p-2">
+            <a href="{% url 'apps:create' %}" class="btn btn-primary">{% translate "Create Application" %}</a>
+          </div>
+        </div>
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>{% translate "Name" %}</th>
+              <th>{% translate "Category" %}</th>
+              <th>{% translate "Status" %}</th>
+              <th>{% translate "Address" %}</th>
+              <th>{% translate "Actions" %}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for app in apps %}
+              <tr>
+                <td>{{ app.name }}</td>
+                <td>
+                  <span class="badge rounded-pill bg-primary">{{ app.category }}</span>
+                </td>
+                <td>
+                  <span class="badge rounded-pill bg-success">{{ app.status }}</span>
+                </td>
+                <td>
+                  <a href="http://{{ app.ip_address }}" target="_blank">{{ app.url }}</a>
+                </td>
+                <td>
+                  {#<a href="#" class="btn btn-primary btn-sm">{% translate "Details" %}</a>#}
+                  <a href="{% url 'apps:start' app.app_id %}"
+                     class="btn btn-success btn-sm">{% translate "Start" %}</a>
+                  <a href="{% url 'apps:delete' app.app_id %}"
+                     class="btn btn-danger btn-sm">{% translate "Delete" %}</a>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+{% endblock %}

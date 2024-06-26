@@ -1,0 +1,476 @@
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ app_id }}
+  namespace: {{ namespace }}
+  labels:
+    app: {{ app_id }}
+    user: {{ user_id }}
+type: Opaque
+data:
+  mysql_root_password: WEd2TXRxVkxoeTQ5dHo5
+immutable: true
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: {{ namespace }}
+  name: {{ app_id }}-mysql
+  labels:
+    app: {{ app_id }}
+    user: {{ user_id }}
+    tier: mysql
+spec:
+  ports:
+    - protocol: TCP
+      port: 3306
+      targetPort: 3306
+  selector:
+    app: {{ app_id }}
+    user: {{ user_id }}
+    tier: mysql
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  namespace: {{ namespace }}
+  name: {{ app_id }}-mysql
+  labels:
+    app: {{ app_id }}
+    user: {{ user_id }}
+    tier: mysql
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 500Mi
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: {{ namespace }}
+  name: {{ app_id }}-mysql
+  labels:
+    app: {{ app_id }}
+    user: {{ user_id }}
+    tier: mysql
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ app_id }}
+      user: {{ user_id }}
+      tier: mysql
+  template:
+    metadata:
+      labels:
+        app: {{ app_id }}
+        user: {{ user_id }}
+        tier: mysql
+    spec:
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 3000
+        fsGroup: 2000
+        seccompProfile:
+          type: RuntimeDefault
+        runAsNonRoot: true
+      containers:
+        - name: {{ app_id }}-mysql
+          image: hsheth2/mysql-low-memory
+          ports:
+            - containerPort: 3306
+              name: mysql
+          env:
+            - name: MYSQL_ROOT_PASSWORD_FILE
+              value: /etc/secrets/mysql_root_password
+            - name: MYSQL_DATABASE
+              value: wordpress
+          volumeMounts:
+            - name: mysql-data
+              mountPath: /var/lib/mysql
+            - name: mysql-secrets
+              mountPath: /etc/secrets
+              readOnly: true
+          resources:
+            limits:
+              cpu: "600m"
+              ephemeral-storage: "1Gi"
+              memory: "300Mi"
+            requests:
+              cpu: "100m"
+              ephemeral-storage: "1Gi"
+              memory: "200Mi"
+          livenessProbe:
+            exec:
+              command:
+                - mysqladmin
+                - ping
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 1
+            failureThreshold: 3
+            successThreshold: 1
+          readinessProbe:
+            exec:
+              command:
+                - mysqladmin
+                - ping
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 1
+            failureThreshold: 3
+            successThreshold: 1
+          startupProbe:
+            exec:
+              command:
+                - mysqladmin
+                - ping
+            initialDelaySeconds: 30
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 10
+            successThreshold: 1
+          securityContext:
+            allowPrivilegeEscalation: false
+            runAsNonRoot: true
+            capabilities:
+              drop:
+                - ALL
+      volumes:
+        - name: mysql-secrets
+          secret:
+            secretName: {{ app_id }}
+        - name: mysql-data
+          persistentVolumeClaim:
+            claimName: {{ app_id }}-mysql
+      {% if spot_pool %}
+      tolerations:
+        - key: spot
+          operator: Equal
+          value: 'true'
+          effect: NoSchedule
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: cloud.google.com/gke-nodepool
+                    operator: In
+                    values:
+                      - spot-pool
+      {% endif %}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: {{ namespace }}
+  name: {{ app_id }}-wordpress
+  labels:
+    app: {{ app_id }}
+    user: {{ user_id }}
+    tier: wordpress
+spec:
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+  selector:
+    app: {{ app_id }}
+    user: {{ user_id }}
+    tier: wordpress
+
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  namespace: {{ namespace }}
+  name: {{ app_id }}-wordpress
+  labels:
+    app: {{ app_id }}
+    user: {{ user_id }}
+    tier: wordpress
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: {{ namespace }}
+  name: {{ app_id }}-wordpress
+  labels:
+    app: {{ app_id }}
+    user: {{ user_id }}
+    tier: wordpress
+spec:
+  selector:
+    matchLabels:
+      app: {{ app_id }}
+      user: {{ user_id }}
+      tier: wordpress
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: {{ app_id }}
+        user: {{ user_id }}
+        tier: wordpress
+      annotations:
+        kubernetes.io/ingress-bandwidth: "10M"
+        kubernetes.io/egress-bandwidth: "10M"
+    spec:
+      securityContext:
+        fsGroup: 1001
+        seccompProfile:
+          type: RuntimeDefault
+        runAsNonRoot: true
+      containers:
+        - name: {{ app_id }}-wordpress
+          image: bitnami/wordpress
+          ports:
+            - containerPort: 8080
+              name: wordpress
+          env:
+            - name: WORDPRESS_SKIP_BOOTSTRAP
+              value: "yes"
+            - name: WORDPRESS_ENABLE_REVERSE_PROXY
+              value: "yes"
+            - name: WORDPRESS_DATABASE_HOST
+              value: {{ app_id }}-mysql
+            - name: WORDPRESS_DATABASE_NAME
+              value: wordpress
+            - name: WORDPRESS_DATABASE_USER
+              value: root
+            - name: WORDPRESS_DATABASE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ app_id }}
+                  key: mysql_root_password
+            - name: WORDPRESS_ENABLE_MULTISITE
+              value: "yes"
+            - name: WORDPRESS_MULTISITE_HOST
+              value: {{ app_id }}.{{ proxy_domain }}
+
+          volumeMounts:
+            - name: wordpress-data
+              mountPath: /bitnami/wordpress
+          securityContext:
+            runAsUser: 1001
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: ["ALL"]
+          resources:
+            limits:
+              cpu: "600m"
+              ephemeral-storage: "1Gi"
+              memory: "200Mi"
+            requests:
+              cpu: "10m"
+              ephemeral-storage: "1Gi"
+              memory: "100Mi"
+          livenessProbe:
+            httpGet:
+              path: /wp-admin/install.php
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 6
+            successThreshold: 1
+          readinessProbe:
+            httpGet:
+              path: /wp-login.php
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 6
+            successThreshold: 1
+          startupProbe:
+            httpGet:
+              path: /wp-login.php
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 10
+            successThreshold: 1
+      volumes:
+        - name: wordpress-data
+          persistentVolumeClaim:
+            claimName: {{ app_id }}-wordpress
+      {% if spot_pool %}
+      tolerations:
+        - key: spot
+          operator: Equal
+          value: 'true'
+          effect: NoSchedule
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: cloud.google.com/gke-nodepool
+                    operator: In
+                    values:
+                      - spot-pool
+      {% endif %}
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: {{ app_id }}-wordpress
+  namespace: {{ namespace }}
+  annotations:
+    cloud.google.com/neg: '{"ingress": true}'
+spec:
+  entryPoints:
+    - web
+    - websecure
+  routes:
+    - match: Host(`{{ app_id }}.{{ proxy_domain }}`)
+      kind: Rule
+      services:
+        - name: {{ app_id }}-wordpress
+          port: 8080
+
+
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ app_id }}-wordpress
+  namespace: {{ namespace }}
+spec:
+  podSelector:
+    matchLabels:
+      app: {{ app_id }}
+      user: {{ user_id }}
+      tier: wordpress
+  policyTypes:
+    - Ingress
+    - Egress
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              name: traefik
+  egress:
+    - to:
+        - podSelector:
+            matchLabels:
+              app: {{ app_id }}
+              user: {{ user_id }}
+              tier: mysql
+        - ipBlock:
+            cidr: 0.0.0.0/0
+            except:
+              - 10.0.0.0/16
+              - 10.1.0.0/16
+              - 10.2.0.0/16
+    - ports:
+        - port: 53
+          protocol: TCP
+        - port: 53
+          protocol: UDP
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ app_id }}-mysql
+  namespace: {{ namespace }}
+spec:
+  podSelector:
+    matchLabels:
+      app: {{ app_id }}
+      user: {{ user_id }}
+      tier: mysql
+  policyTypes:
+    - Ingress
+    - Egress
+  ingress:
+    - {}
+  egress:
+   - {}
+
+---
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: {{ app_id }}-wordpress
+  namespace: {{ namespace }}
+spec:
+  scaleTargetRef:
+    name: {{ app_id }}-wordpress
+  pollingInterval: 15
+  cooldownPeriod: 600
+  minReplicaCount: 0
+  maxReplicaCount: 1
+  advanced:
+    horizontalPodAutoscalerConfig:
+      behavior:
+        scaleDown:
+          stabilizationWindowSeconds: 600
+          policies:
+          - type: Percent
+            value: 100
+            periodSeconds: 15
+        scaleUp:
+          selectPolicy: Disabled
+  triggers:
+    - type: prometheus
+      metricType: Value
+      metadata:
+        serverAddress: http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090
+        query: max(max(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{pod=~"{{app_id}}-wordpress.*", namespace="{{ namespace }}"} * 100) > bool 3 or (time() - kube_pod_created{pod=~"{{app_id}}-wordpress.*", namespace="{{ namespace }}"} < bool 300))
+        threshold: "1"
+        ignoreNullValues: "false"
+
+---
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: {{ app_id }}-mysql
+  namespace: {{ namespace }}
+spec:
+  scaleTargetRef:
+    name: {{ app_id }}-mysql
+  pollingInterval: 15
+  cooldownPeriod: 600
+  minReplicaCount: 0
+  maxReplicaCount: 1
+  advanced:
+    horizontalPodAutoscalerConfig:
+      behavior:
+        scaleDown:
+          stabilizationWindowSeconds: 600
+          policies:
+          - type: Percent
+            value: 100
+            periodSeconds: 15
+        scaleUp:
+          selectPolicy: Disabled
+  triggers:
+    - type: prometheus
+      metricType: Value
+      metadata:
+        serverAddress: http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090
+        query: max(max(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{pod=~"{{app_id}}-wordpress.*", namespace="{{ namespace }}"} * 100) > bool 3 or (time() - kube_pod_created{pod=~"{{app_id}}-wordpress.*", namespace="{{ namespace }}"} < bool 300))
+        threshold: "1"
+        ignoreNullValues: "false"

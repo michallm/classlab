@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: classlab-brain
+
+---
+# admin cluster role binding
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: classlab-brain-binding
+subjects:
+  - kind: ServiceAccount
+    name: classlab-brain
+    namespace: default
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+
+---
+# token
+kind: Secret
+apiVersion: v1
+metadata:
+  name: classlab-brain-token
+  annotations:
+    kubernetes.io/service-account.name: classlab-brain
+type: kubernetes.io/service-account-token

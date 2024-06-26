@@ -1,0 +1,12 @@
+{% extends "account/email/base_message.txt" %}
+{% load account %}
+{% load i18n %}
+
+{% block content %}{% autoescape off %}{% user_display user as user_display %}{% blocktrans with site_name=current_site.name site_domain=current_site.domain %}
+An account on the ClassLab service has been set up at your e-mail address {{ user_display }}.
+
+To complete the registration process and activate your account, please confirm your email address by clicking on the link below.
+
+{{ activate_url }}
+
+{% endblocktrans %}{% endautoescape %}{% endblock %}

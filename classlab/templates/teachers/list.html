@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% load i18n %}
+
+{% block title %}
+  {% translate "Teacher List" %}
+{% endblock %}
+{% block content %}
+  <div class="container mt-3">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="d-flex justify-content-between">
+          <div class="p-2">
+            <h1>{% translate "Teacher List" %}</h1>
+            <p>{% translate "List of teachers" %}</p>
+          </div>
+          <div class="p-2">
+            <a href="{% url 'teachers:create' %}" class="btn btn-primary">{% translate "Create Teacher" %}</a>
+          </div>
+        </div>
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>{% translate "First Name" %}</th>
+              <th>{% translate "Last Name" %}</th>
+              <th>{% translate "Email" %}</th>
+              <th>{% translate "Actions" %}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for teacher in object_list %}
+              <tr>
+                <td>{{ teacher.user.first_name }}</td>
+                <td>{{ teacher.user.last_name }}</td>
+                <td>{{ teacher.user.email }}</td>
+                <td class="d-flex gap-2">
+                  <form action="{% url 'teachers:resend-confirm-email' teacher.teacher_id %}"
+                        method="post">
+                    {% csrf_token %}
+                    <button class="btn btn-primary btn-sm" type="submit" name="action_send">{% translate "Resend Verification" %}</button>
+                  </form>
+                  <a href="{% url 'teachers:update' teacher.teacher_id %}"
+                     class="btn btn-primary btn-sm">{% translate "Edit" %}</a>
+                  <a href="{% url 'teachers:delete' teacher.teacher_id %}"
+                     class="btn btn-danger btn-sm">{% translate "Delete" %}</a>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        <div class="d-flex justify-content-start mt-5">{% include 'blocks/pagination.html' %}</div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

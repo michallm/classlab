@@ -1,0 +1,99 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: {{ namespace }}
+  name: {{ app_id }}
+  labels:
+    app: {{ app_id }}
+    user: {{ user_id }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ app_id }}
+      user: {{ user_id }}
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: {{ app_id }}
+        user: {{ user_id }}
+    spec:
+      containers:
+        - name: {{ app_id }}
+          image: traefik/whoami
+          ports:
+            - containerPort: 80
+              name: whoami
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: {{ namespace }}
+  name: {{ app_id }}
+  labels:
+    app: {{ app_id }}
+    user: {{ user_id }}
+spec:
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  selector:
+    app: {{ app_id }}
+    user: {{ user_id }}
+
+# ---
+# apiVersion: keda.sh/v1alpha1
+# kind: ScaledObject
+# metadata:
+#   name: {{ app_id }}
+#   namespace: {{ namespace }}
+# spec:
+#   scaleTargetRef:
+#     name: {{ app_id }}
+#   pollingInterval: 15
+#   cooldownPeriod: 600
+#   minReplicaCount: 0
+#   maxReplicaCount: 1
+#   advanced:
+#     horizontalPodAutoscalerConfig:
+#       behavior:
+#         scaleDown:
+#           stabilizationWindowSeconds: 600
+#           policies:
+#           - type: Percent
+#             value: 100
+#             periodSeconds: 15
+#         scaleUp:
+#           selectPolicy: Disabled
+#   triggers:
+#     - type: prometheus
+#       metricType: Value
+#       metadata:
+#         serverAddress: http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090
+#         query: max(max(sum(rate(container_fs_reads_total{container!="",job="kubelet",metrics_path="/metrics/cadvisor",pod=~"{{ app_id }}.*"}[2m30s])+rate(container_fs_writes_total{container!="",job="kubelet",metrics_path="/metrics/cadvisor",pod=~"{{ app_id }}.*"}[2m30s]))) * 100 > bool 10 or (time() - kube_pod_created{pod=~"{{app_id}}.*", namespace="{{ namespace }}"} < bool 300))
+#         threshold: "1"
+#         ignoreNullValues: "false"
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ app_id }}
+  namespace: {{ namespace }}
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: {{ app_id }}.{{ proxy_domain }}
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: {{ app_id }}
+            port:
+              number: 80

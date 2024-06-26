@@ -1,0 +1,17 @@
+<ul class="pagination">
+  <!-- previous -->
+  <li class="page-item {% if not page_obj.has_previous %}disabled{% endif %}">
+    <a class="page-link"
+       href="?page={% if page_obj.has_previous %}{{ page_obj.previous_page_number }}{% else %}1{% endif %}">&laquo;</a>
+  </li>
+  {% for i in page_obj.paginator.page_range %}
+    <li class="page-item {% if page_obj.number == i %}active{% endif %}">
+      <a class="page-link" href="?page={{ i }}">{{ i }}</a>
+    </li>
+  {% endfor %}
+  <!-- next -->
+  <li class="page-item {% if not page_obj.has_next %}disabled{% endif %}">
+    <a class="page-link"
+       href="?page={% if page_obj.has_next %}{{ page_obj.next_page_number }}{% else %}{{ page_obj.paginator.num_pages }}{% endif %}">&raquo;</a>
+  </li>
+</ul>

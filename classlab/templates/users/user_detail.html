@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% load static i18n %}
+
+{% block title %}
+  {% translate "User" %} -
+  {{ object.get_short_name }}
+{% endblock %}
+{% block content %}
+  <div class="container">
+    <div class="row">
+      <div class="col-md-3">
+        <img src="{% static 'images/illustrations/profile_picture.svg' %}"
+             alt="{% translate 'Profile picture' %}"
+             class="img-fluid" />
+      </div>
+      <div class="col-md-9">
+        <h2>{{ object.first_name }} {{ object.last_name }}</h2>
+        <p>
+          <strong>{% translate "Email" %}:</strong> {{ object.email }}
+        </p>
+        <p>
+          <strong>{% translate "Role" %}:</strong> {{ object.get_user_type_display }}
+        </p>
+        <!-- if is_student then show the class -->
+        {% if object.is_student %}
+          <p>
+            <strong>{% translate "Class" %}:</strong>
+            {% if object.student.student_class %}
+              {{ object.student.student_class.name }}
+            {% else %}
+              {% translate "No class" %}
+            {% endif %}
+          {% endif %}
+        </p>
+        <a href="{% url 'account_change_password' %}" class="btn btn-primary">{% translate "Change password" %}</a>
+      </div>
+    </div>
+  </div>
+{% endblock content %}

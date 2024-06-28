@@ -34,7 +34,7 @@ def main():
             "user_id": "jankow",
             "mysql_root_password": base64.b64encode(b"password").decode(),
             "spot_pool": True,
-            "proxy_domain": "apps.classlab.pl" if not args.dev else "apps.classlab.test",
+            "proxy_domain": "apps.classlab.pl" if not args.dev else "apps.classlab.localhost",
         }
 
         if args.dev:

@@ -2,7 +2,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: technr2
+  namespace: default
   name: vscode
   labels:
     app: vscode
@@ -40,7 +40,7 @@ spec:
             - name: SUDO_PASSWORD
               value: "password"
             - name: PROXY_DOMAIN
-              value: "vscode.apps.classlab.test"
+              value: "vscode.apps.classlab.localhost"
             - name: DEFAULT_WORKSPACE
               value: "/workspace"
 
@@ -57,7 +57,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  namespace: technr2
+  namespace: default
   name: vscode
   labels:
     app: vscode
@@ -73,7 +73,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  namespace: technr2
+  namespace: default
   name: vscode
   labels:
     app: vscode
@@ -92,7 +92,7 @@ spec:
 # kind: ScaledObject
 # metadata:
 #   name: vscode
-#   namespace: technr2
+#   namespace: default
 # spec:
 #   scaleTargetRef:
 #     name: vscode
@@ -116,7 +116,7 @@ spec:
 #       metricType: Value
 #       metadata:
 #         serverAddress: http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090
-#         query: max(max(sum(rate(container_fs_reads_total{container!="",job="kubelet",metrics_path="/metrics/cadvisor",pod=~"vscode.*"}[2m30s])+rate(container_fs_writes_total{container!="",job="kubelet",metrics_path="/metrics/cadvisor",pod=~"vscode.*"}[2m30s]))) * 100 > bool 10 or (time() - kube_pod_created{pod=~"vscode.*", namespace="technr2"} < bool 300))
+#         query: max(max(sum(rate(container_fs_reads_total{container!="",job="kubelet",metrics_path="/metrics/cadvisor",pod=~"vscode.*"}[2m30s])+rate(container_fs_writes_total{container!="",job="kubelet",metrics_path="/metrics/cadvisor",pod=~"vscode.*"}[2m30s]))) * 100 > bool 10 or (time() - kube_pod_created{pod=~"vscode.*", namespace="default"} < bool 300))
 #         threshold: "1"
 #         ignoreNullValues: "false"
 
@@ -125,11 +125,11 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: vscode
-  namespace: technr2
+  namespace: default
 spec:
   ingressClassName: nginx
   rules:
-  - host: vscode.apps.classlab.test
+  - host: vscode.apps.classlab.localhost
     http:
       paths:
       - path: /

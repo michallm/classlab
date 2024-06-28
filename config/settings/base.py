@@ -338,7 +338,7 @@ SELECT2_CACHE_BACKEND = "default"
 
 # Your stuff...
 # ------------------------------------------------------------------------------
-PROXY_DOMAIN = env("PROXY_DOMAIN", default="apps.classlab.test")
+PROXY_DOMAIN = env("PROXY_DOMAIN", default="apps.classlab.localhost")
 
 # Django maintenance mode
 MAINTENANCE_MODE_IGNORE_STAFF = True

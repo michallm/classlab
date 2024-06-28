@@ -3,7 +3,7 @@ apiVersion: v1
 kind: Secret
 metadata:
   name: wordpress
-  namespace: technr2
+  namespace: default
   labels:
     app: wordpress
     user: jankow
@@ -16,7 +16,7 @@ immutable: true
 apiVersion: v1
 kind: Service
 metadata:
-  namespace: technr2
+  namespace: default
   name: wordpress-mysql
   labels:
     app: wordpress
@@ -36,7 +36,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  namespace: technr2
+  namespace: default
   name: wordpress-mysql
   labels:
     app: wordpress
@@ -53,7 +53,7 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: technr2
+  namespace: default
   name: wordpress-mysql
   labels:
     app: wordpress
@@ -73,16 +73,16 @@ spec:
         user: jankow
         tier: mysql
     spec:
-      securityContext:
-        runAsUser: 1000
-        runAsGroup: 3000
-        fsGroup: 2000
-        seccompProfile:
-          type: RuntimeDefault
-        runAsNonRoot: true
+      # securityContext:
+      #   runAsUser: 1000
+      #   runAsGroup: 3000
+      #   fsGroup: 2000
+      #   seccompProfile:
+      #     type: RuntimeDefault
+      #   runAsNonRoot: true
       containers:
         - name: wordpress-mysql
-          image: hsheth2/mysql-low-memory
+          image: mysql
           ports:
             - containerPort: 3306
               name: mysql
@@ -97,51 +97,51 @@ spec:
             - name: mysql-secrets
               mountPath: /etc/secrets
               readOnly: true
-          resources:
-            limits:
-              cpu: "600m"
-              ephemeral-storage: "1Gi"
-              memory: "300Mi"
-            requests:
-              cpu: "100m"
-              ephemeral-storage: "1Gi"
-              memory: "200Mi"
-          livenessProbe:
-            exec:
-              command:
-                - mysqladmin
-                - ping
-            initialDelaySeconds: 5
-            periodSeconds: 10
-            timeoutSeconds: 1
-            failureThreshold: 3
-            successThreshold: 1
-          readinessProbe:
-            exec:
-              command:
-                - mysqladmin
-                - ping
-            initialDelaySeconds: 5
-            periodSeconds: 10
-            timeoutSeconds: 1
-            failureThreshold: 3
-            successThreshold: 1
-          startupProbe:
-            exec:
-              command:
-                - mysqladmin
-                - ping
-            initialDelaySeconds: 30
-            periodSeconds: 5
-            timeoutSeconds: 3
-            failureThreshold: 10
-            successThreshold: 1
-          securityContext:
-            allowPrivilegeEscalation: false
-            runAsNonRoot: true
-            capabilities:
-              drop:
-                - ALL
+          # resources:
+          #   limits:
+          #     cpu: "600m"
+          #     ephemeral-storage: "1Gi"
+          #     memory: "300Mi"
+          #   requests:
+          #     cpu: "100m"
+          #     ephemeral-storage: "1Gi"
+          #     memory: "200Mi"
+          # livenessProbe:
+          #   exec:
+          #     command:
+          #       - mysqladmin
+          #       - ping
+          #   initialDelaySeconds: 5
+          #   periodSeconds: 10
+          #   timeoutSeconds: 1
+          #   failureThreshold: 3
+          #   successThreshold: 1
+          # readinessProbe:
+          #   exec:
+          #     command:
+          #       - mysqladmin
+          #       - ping
+          #   initialDelaySeconds: 5
+          #   periodSeconds: 10
+          #   timeoutSeconds: 1
+          #   failureThreshold: 3
+          #   successThreshold: 1
+          # startupProbe:
+          #   exec:
+          #     command:
+          #       - mysqladmin
+          #       - ping
+          #   initialDelaySeconds: 30
+          #   periodSeconds: 5
+          #   timeoutSeconds: 3
+          #   failureThreshold: 10
+          #   successThreshold: 1
+          # securityContext:
+          #   allowPrivilegeEscalation: false
+          #   runAsNonRoot: true
+          #   capabilities:
+          #     drop:
+          #       - ALL
       volumes:
         - name: mysql-secrets
           secret:
@@ -149,12 +149,11 @@ spec:
         - name: mysql-data
           persistentVolumeClaim:
             claimName: wordpress-mysql
-      
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  namespace: technr2
+  namespace: default
   name: wordpress-wordpress
   labels:
     app: wordpress
@@ -175,7 +174,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  namespace: technr2
+  namespace: default
   name: wordpress-wordpress
   labels:
     app: wordpress
@@ -192,7 +191,7 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: technr2
+  namespace: default
   name: wordpress-wordpress
   labels:
     app: wordpress
@@ -212,15 +211,15 @@ spec:
         app: wordpress
         user: jankow
         tier: wordpress
-      annotations:
-        kubernetes.io/ingress-bandwidth: "10M"
-        kubernetes.io/egress-bandwidth: "10M"
+      # annotations:
+        # kubernetes.io/ingress-bandwidth: "10M"
+        # kubernetes.io/egress-bandwidth: "10M"
     spec:
-      securityContext:
-        fsGroup: 1001
-        seccompProfile:
-          type: RuntimeDefault
-        runAsNonRoot: true
+      # securityContext:
+      #   fsGroup: 1001
+      #   seccompProfile:
+      #     type: RuntimeDefault
+      #   runAsNonRoot: true
       containers:
         - name: wordpress-wordpress
           image: bitnami/wordpress
@@ -243,204 +242,205 @@ spec:
                 secretKeyRef:
                   name: wordpress
                   key: mysql_root_password
-            - name: WORDPRESS_ENABLE_MULTISITE
-              value: "yes"
-            - name: WORDPRESS_MULTISITE_HOST
-              value: wordpress.apps.classlab.test
+            # - name: WORDPRESS_ENABLE_MULTISITE
+            #   value: "yes"
+            # on dev it can't be set to localhost
+            # - name: WORDPRESS_MULTISITE_HOST
+            #   value: wordpress.apps.classlab.localhost
 
           volumeMounts:
             - name: wordpress-data
               mountPath: /bitnami/wordpress
-          securityContext:
-            runAsUser: 1001
-            runAsNonRoot: true
-            allowPrivilegeEscalation: false
-            capabilities:
-              drop: ["ALL"]
-          resources:
-            limits:
-              cpu: "600m"
-              ephemeral-storage: "1Gi"
-              memory: "200Mi"
-            requests:
-              cpu: "10m"
-              ephemeral-storage: "1Gi"
-              memory: "100Mi"
-          livenessProbe:
-            httpGet:
-              path: /wp-admin/install.php
-              port: 8080
-              scheme: HTTP
-            initialDelaySeconds: 30
-            periodSeconds: 10
-            timeoutSeconds: 5
-            failureThreshold: 6
-            successThreshold: 1
-          readinessProbe:
-            httpGet:
-              path: /wp-login.php
-              port: 8080
-              scheme: HTTP
-            initialDelaySeconds: 30
-            periodSeconds: 10
-            timeoutSeconds: 5
-            failureThreshold: 6
-            successThreshold: 1
-          startupProbe:
-            httpGet:
-              path: /wp-login.php
-              port: 8080
-              scheme: HTTP
-            initialDelaySeconds: 30
-            periodSeconds: 10
-            timeoutSeconds: 5
-            failureThreshold: 10
-            successThreshold: 1
+          # securityContext:
+          #   runAsUser: 1001
+          #   runAsNonRoot: true
+          #   allowPrivilegeEscalation: false
+          #   capabilities:
+          #     drop: ["ALL"]
+          # resources:
+          #   limits:
+          #     cpu: "600m"
+          #     ephemeral-storage: "1Gi"
+          #     memory: "200Mi"
+          #   requests:
+          #     cpu: "10m"
+          #     ephemeral-storage: "1Gi"
+          #     memory: "100Mi"
+          # livenessProbe:
+          #   httpGet:
+          #     path: /wp-admin/install.php
+          #     port: 8080
+          #     scheme: HTTP
+          #   initialDelaySeconds: 30
+          #   periodSeconds: 10
+          #   timeoutSeconds: 5
+          #   failureThreshold: 6
+          #   successThreshold: 1
+          # readinessProbe:
+          #   httpGet:
+          #     path: /wp-login.php
+          #     port: 8080
+          #     scheme: HTTP
+          #   initialDelaySeconds: 30
+          #   periodSeconds: 10
+          #   timeoutSeconds: 5
+          #   failureThreshold: 6
+          #   successThreshold: 1
+          # startupProbe:
+          #   httpGet:
+          #     path: /wp-login.php
+          #     port: 8080
+          #     scheme: HTTP
+          #   initialDelaySeconds: 30
+          #   periodSeconds: 10
+          #   timeoutSeconds: 5
+          #   failureThreshold: 10
+          #   successThreshold: 1
       volumes:
         - name: wordpress-data
           persistentVolumeClaim:
             claimName: wordpress-wordpress
-      
----
-apiVersion: traefik.containo.us/v1alpha1
-kind: IngressRoute
-metadata:
-  name: wordpress-wordpress
-  namespace: technr2
-  annotations:
-    cloud.google.com/neg: '{"ingress": true}'
-spec:
-  entryPoints:
-    - web
-    - websecure
-  routes:
-    - match: Host(`wordpress.apps.classlab.test`)
-      kind: Rule
-      services:
-        - name: wordpress-wordpress
-          port: 8080
-
 
 ---
 apiVersion: networking.k8s.io/v1
-kind: NetworkPolicy
+kind: Ingress
 metadata:
   name: wordpress-wordpress
-  namespace: technr2
+  namespace: default
 spec:
-  podSelector:
-    matchLabels:
-      app: wordpress
-      user: jankow
-      tier: wordpress
-  policyTypes:
-    - Ingress
-    - Egress
-  ingress:
-    - from:
-        - namespaceSelector:
-            matchLabels:
-              name: traefik
-  egress:
-    - to:
-        - podSelector:
-            matchLabels:
-              app: wordpress
-              user: jankow
-              tier: mysql
-        - ipBlock:
-            cidr: 0.0.0.0/0
-            except:
-              - 10.0.0.0/16
-              - 10.1.0.0/16
-              - 10.2.0.0/16
-    - ports:
-        - port: 53
-          protocol: TCP
-        - port: 53
-          protocol: UDP
----
-apiVersion: networking.k8s.io/v1
-kind: NetworkPolicy
-metadata:
-  name: wordpress-mysql
-  namespace: technr2
-spec:
-  podSelector:
-    matchLabels:
-      app: wordpress
-      user: jankow
-      tier: mysql
-  policyTypes:
-    - Ingress
-    - Egress
-  ingress:
-    - {}
-  egress:
-   - {}
+  ingressClassName: nginx
+  rules:
+  - host: wordpress.apps.classlab.localhost
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: wordpress-wordpress
+            port:
+              number: 8080
 
----
-apiVersion: keda.sh/v1alpha1
-kind: ScaledObject
-metadata:
-  name: wordpress-wordpress
-  namespace: technr2
-spec:
-  scaleTargetRef:
-    name: wordpress-wordpress
-  pollingInterval: 15
-  cooldownPeriod: 600
-  minReplicaCount: 0
-  maxReplicaCount: 1
-  advanced:
-    horizontalPodAutoscalerConfig:
-      behavior:
-        scaleDown:
-          stabilizationWindowSeconds: 600
-          policies:
-          - type: Percent
-            value: 100
-            periodSeconds: 15
-        scaleUp:
-          selectPolicy: Disabled
-  triggers:
-    - type: prometheus
-      metricType: Value
-      metadata:
-        serverAddress: http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090
-        query: max(max(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{pod=~"wordpress-wordpress.*", namespace="technr2"} * 100) > bool 3 or (time() - kube_pod_created{pod=~"wordpress-wordpress.*", namespace="technr2"} < bool 300))
-        threshold: "1"
-        ignoreNullValues: "false"
+# ---
+# apiVersion: networking.k8s.io/v1
+# kind: NetworkPolicy
+# metadata:
+#   name: wordpress-wordpress
+#   namespace: default
+# spec:
+#   podSelector:
+#     matchLabels:
+#       app: wordpress
+#       user: jankow
+#       tier: wordpress
+#   policyTypes:
+#     - Ingress
+#     - Egress
+#   ingress:
+#     - from:
+#         - namespaceSelector:
+#             matchLabels:
+#               name: traefik
+#   egress:
+#     - to:
+#         - podSelector:
+#             matchLabels:
+#               app: wordpress
+#               user: jankow
+#               tier: mysql
+#         - ipBlock:
+#             cidr: 0.0.0.0/0
+#             except:
+#               - 10.0.0.0/16
+#               - 10.1.0.0/16
+#               - 10.2.0.0/16
+#     - ports:
+#         - port: 53
+#           protocol: TCP
+#         - port: 53
+#           protocol: UDP
+# ---
+# apiVersion: networking.k8s.io/v1
+# kind: NetworkPolicy
+# metadata:
+#   name: wordpress-mysql
+#   namespace: default
+# spec:
+#   podSelector:
+#     matchLabels:
+#       app: wordpress
+#       user: jankow
+#       tier: mysql
+#   policyTypes:
+#     - Ingress
+#     - Egress
+#   ingress:
+#     - {}
+#   egress:
+#    - {}
 
----
-apiVersion: keda.sh/v1alpha1
-kind: ScaledObject
-metadata:
-  name: wordpress-mysql
-  namespace: technr2
-spec:
-  scaleTargetRef:
-    name: wordpress-mysql
-  pollingInterval: 15
-  cooldownPeriod: 600
-  minReplicaCount: 0
-  maxReplicaCount: 1
-  advanced:
-    horizontalPodAutoscalerConfig:
-      behavior:
-        scaleDown:
-          stabilizationWindowSeconds: 600
-          policies:
-          - type: Percent
-            value: 100
-            periodSeconds: 15
-        scaleUp:
-          selectPolicy: Disabled
-  triggers:
-    - type: prometheus
-      metricType: Value
-      metadata:
-        serverAddress: http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090
-        query: max(max(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{pod=~"wordpress-wordpress.*", namespace="technr2"} * 100) > bool 3 or (time() - kube_pod_created{pod=~"wordpress-wordpress.*", namespace="technr2"} < bool 300))
-        threshold: "1"
-        ignoreNullValues: "false"
+# ---
+# apiVersion: keda.sh/v1alpha1
+# kind: ScaledObject
+# metadata:
+#   name: wordpress-wordpress
+#   namespace: default
+# spec:
+#   scaleTargetRef:
+#     name: wordpress-wordpress
+#   pollingInterval: 15
+#   cooldownPeriod: 600
+#   minReplicaCount: 0
+#   maxReplicaCount: 1
+#   advanced:
+#     horizontalPodAutoscalerConfig:
+#       behavior:
+#         scaleDown:
+#           stabilizationWindowSeconds: 600
+#           policies:
+#           - type: Percent
+#             value: 100
+#             periodSeconds: 15
+#         scaleUp:
+#           selectPolicy: Disabled
+#   triggers:
+#     - type: prometheus
+#       metricType: Value
+#       metadata:
+#         serverAddress: http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090
+#         query: max(max(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{pod=~"wordpress-wordpress.*", namespace="default"} * 100) > bool 3 or (time() - kube_pod_created{pod=~"wordpress-wordpress.*", namespace="default"} < bool 300))
+#         threshold: "1"
+#         ignoreNullValues: "false"
+
+# ---
+# apiVersion: keda.sh/v1alpha1
+# kind: ScaledObject
+# metadata:
+#   name: wordpress-mysql
+#   namespace: default
+# spec:
+#   scaleTargetRef:
+#     name: wordpress-mysql
+#   pollingInterval: 15
+#   cooldownPeriod: 600
+#   minReplicaCount: 0
+#   maxReplicaCount: 1
+#   advanced:
+#     horizontalPodAutoscalerConfig:
+#       behavior:
+#         scaleDown:
+#           stabilizationWindowSeconds: 600
+#           policies:
+#           - type: Percent
+#             value: 100
+#             periodSeconds: 15
+#         scaleUp:
+#           selectPolicy: Disabled
+#   triggers:
+#     - type: prometheus
+#       metricType: Value
+#       metadata:
+#         serverAddress: http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090
+#         query: max(max(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{pod=~"wordpress-wordpress.*", namespace="default"} * 100) > bool 3 or (time() - kube_pod_created{pod=~"wordpress-wordpress.*", namespace="default"} < bool 300))
+#         threshold: "1"
+#         ignoreNullValues: "false"

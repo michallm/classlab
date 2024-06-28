@@ -3,7 +3,7 @@ apiVersion: v1
 kind: Secret
 metadata:
   name: mysql-phpmyadmin
-  namespace: technr2
+  namespace: default
   labels:
     app: mysql-phpmyadmin
     user: jankow
@@ -17,7 +17,7 @@ immutable: true
 apiVersion: v1
 kind: Service
 metadata:
-  namespace: technr2
+  namespace: default
   name: mysql-phpmyadmin-mysql
   labels:
     app: mysql-phpmyadmin
@@ -36,7 +36,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  namespace: technr2
+  namespace: default
   name: mysql-phpmyadmin
   labels:
     app: mysql-phpmyadmin
@@ -53,7 +53,7 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: technr2
+  namespace: default
   name: mysql-phpmyadmin-mysql
   labels:
     app: mysql-phpmyadmin
@@ -157,7 +157,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  namespace: technr2
+  namespace: default
   name: mysql-phpmyadmin-phpmyadmin
   labels:
     app: mysql-phpmyadmin
@@ -177,7 +177,7 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: technr2
+  namespace: default
   name: mysql-phpmyadmin-phpmyadmin
   labels:
     app: mysql-phpmyadmin
@@ -267,7 +267,7 @@ apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
   name: mysql-phpmyadmin-phpmyadmin
-  namespace: technr2
+  namespace: default
   annotations:
     cloud.google.com/neg: '{"ingress": true}'
 spec:
@@ -287,7 +287,7 @@ apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
   name: mysql-phpmyadmin-phpmyadmin
-  namespace: technr2
+  namespace: default
 spec:
   podSelector:
     matchLabels:
@@ -325,7 +325,7 @@ apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
   name: mysql-phpmyadmin-mysql
-  namespace: technr2
+  namespace: default
 spec:
   podSelector:
     matchLabels:
@@ -345,7 +345,7 @@ apiVersion: keda.sh/v1alpha1
 kind: ScaledObject
 metadata:
   name: mysql-phpmyadmin-phpmyadmin
-  namespace: technr2
+  namespace: default
 spec:
   scaleTargetRef:
     name: mysql-phpmyadmin-phpmyadmin
@@ -369,7 +369,7 @@ spec:
       metricType: Value
       metadata:
         serverAddress: http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090
-        query: max(max(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{pod=~"mysql-phpmyadmin-phpmyadmin.*", namespace="technr2" } * 100) > bool 1 or (time() - kube_pod_created{pod=~"mysql-phpmyadmin-phpmyadmin.*", namespace="technr2"} < bool 300))
+        query: max(max(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{pod=~"mysql-phpmyadmin-phpmyadmin.*", namespace="default" } * 100) > bool 1 or (time() - kube_pod_created{pod=~"mysql-phpmyadmin-phpmyadmin.*", namespace="default"} < bool 300))
         threshold: "1"
         ignoreNullValues: "false"
 
@@ -378,7 +378,7 @@ apiVersion: keda.sh/v1alpha1
 kind: ScaledObject
 metadata:
   name: mysql-phpmyadmin-mysql
-  namespace: technr2
+  namespace: default
 spec:
   scaleTargetRef:
     name: mysql-phpmyadmin-mysql
@@ -402,6 +402,6 @@ spec:
       metricType: Value
       metadata:
         serverAddress: http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090
-        query: max(max(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{pod=~"mysql-phpmyadmin-phpmyadmin.*", namespace="technr2" } * 100) > bool 1 or (time() - kube_pod_created{pod=~"mysql-phpmyadmin-phpmyadmin.*", namespace="technr2"} < bool 300))
+        query: max(max(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{pod=~"mysql-phpmyadmin-phpmyadmin.*", namespace="default" } * 100) > bool 1 or (time() - kube_pod_created{pod=~"mysql-phpmyadmin-phpmyadmin.*", namespace="default"} < bool 300))
         threshold: "1"
         ignoreNullValues: "false"

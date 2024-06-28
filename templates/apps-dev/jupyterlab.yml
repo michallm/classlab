@@ -2,7 +2,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: technr2
+  namespace: default
   name: jupyterlab
   labels:
     app: jupyterlab
@@ -43,7 +43,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  namespace: technr2
+  namespace: default
   name: jupyterlab
   labels:
     app: jupyterlab
@@ -59,7 +59,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  namespace: technr2
+  namespace: default
   name: jupyterlab
   labels:
     app: jupyterlab
@@ -78,7 +78,7 @@ spec:
 # kind: ScaledObject
 # metadata:
 #   name: jupyterlab
-#   namespace: technr2
+#   namespace: default
 # spec:
 #   scaleTargetRef:
 #     name: jupyterlab
@@ -102,7 +102,7 @@ spec:
 #       metricType: Value
 #       metadata:
 #         serverAddress: http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090
-#         query: max(max(sum(rate(container_fs_reads_total{container!="",job="kubelet",metrics_path="/metrics/cadvisor",pod=~"jupyterlab.*"}[2m30s])+rate(container_fs_writes_total{container!="",job="kubelet",metrics_path="/metrics/cadvisor",pod=~"jupyterlab.*"}[2m30s]))) * 100 > bool 10 or (time() - kube_pod_created{pod=~"jupyterlab.*", namespace="technr2"} < bool 300))
+#         query: max(max(sum(rate(container_fs_reads_total{container!="",job="kubelet",metrics_path="/metrics/cadvisor",pod=~"jupyterlab.*"}[2m30s])+rate(container_fs_writes_total{container!="",job="kubelet",metrics_path="/metrics/cadvisor",pod=~"jupyterlab.*"}[2m30s]))) * 100 > bool 10 or (time() - kube_pod_created{pod=~"jupyterlab.*", namespace="default"} < bool 300))
 #         threshold: "1"
 #         ignoreNullValues: "false"
 
@@ -111,11 +111,11 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: jupyterlab
-  namespace: technr2
+  namespace: default
 spec:
   ingressClassName: nginx
   rules:
-  - host: jupyterlab.apps.classlab.test
+  - host: jupyterlab.apps.classlab.localhost
     http:
       paths:
       - path: /

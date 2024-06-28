@@ -2,7 +2,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: technr2
+  namespace: default
   name: whoami
   labels:
     app: whoami
@@ -31,7 +31,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  namespace: technr2
+  namespace: default
   name: whoami
   labels:
     app: whoami
@@ -50,7 +50,7 @@ spec:
 # kind: ScaledObject
 # metadata:
 #   name: whoami
-#   namespace: technr2
+#   namespace: default
 # spec:
 #   scaleTargetRef:
 #     name: whoami
@@ -74,7 +74,7 @@ spec:
 #       metricType: Value
 #       metadata:
 #         serverAddress: http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090
-#         query: max(max(sum(rate(container_fs_reads_total{container!="",job="kubelet",metrics_path="/metrics/cadvisor",pod=~"whoami.*"}[2m30s])+rate(container_fs_writes_total{container!="",job="kubelet",metrics_path="/metrics/cadvisor",pod=~"whoami.*"}[2m30s]))) * 100 > bool 10 or (time() - kube_pod_created{pod=~"whoami.*", namespace="technr2"} < bool 300))
+#         query: max(max(sum(rate(container_fs_reads_total{container!="",job="kubelet",metrics_path="/metrics/cadvisor",pod=~"whoami.*"}[2m30s])+rate(container_fs_writes_total{container!="",job="kubelet",metrics_path="/metrics/cadvisor",pod=~"whoami.*"}[2m30s]))) * 100 > bool 10 or (time() - kube_pod_created{pod=~"whoami.*", namespace="default"} < bool 300))
 #         threshold: "1"
 #         ignoreNullValues: "false"
 
@@ -83,11 +83,11 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: whoami
-  namespace: technr2
+  namespace: default
 spec:
   ingressClassName: nginx
   rules:
-  - host: whoami.apps.classlab.test
+  - host: whoami.apps.classlab.localhost
     http:
       paths:
       - path: /

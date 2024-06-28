@@ -24,7 +24,7 @@ services:
       - K8S_HOST=ur
       - K8S_TOKEN=token
       - K8S_CA_CERT=cert
-      - PROXY_DOMAIN=apps.classlab.test
+      - PROXY_DOMAIN=apps.classlab.localhost
       - DATABASE_URL=postgres://postgres:postgres@postgres:5432/classlab
       - KUBECONFIG=/kube/config
       - PROMETHEUS_URL=http://host.docker.internal:9090

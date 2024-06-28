@@ -11,7 +11,8 @@ minikube:
 	@kubectl config view --raw > kubeconfig
 	@echo "Replacing 127.0.0.1 with host.docker.internal in kubeconfig..."
 	@sed -i '' -e 's/127.0.0.1/host.docker.internal/g' kubeconfig
-	@echo "Minikube setup complete."
+	@echo "Starting Minikube tunnel..."
+	@minikube tunnel --profile=classlab
 
 minikube-stop:
 	@echo "Stopping Minikube..."

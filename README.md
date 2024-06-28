@@ -100,23 +100,9 @@ Only tested on MacOS.
   helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
   helm repo update
   helm install kube-prometheus-stack prometheus-community/kube-prometheus-stack --namespace monitoring --create-namespace -f ./infra/k8s-dev/kube-prometheus/values.yml
-  ```
 
-- Mac OS only
-
-  ```sh
-  # https://blog.woodenstake.se/minikube-with-dns-on-apple-silicon/
-  brew install chipmk/tap/docker-mac-net-connect
-  sudo brew services start chipmk/tap/docker-mac-net-connect
-  ```
-
-  edit file /etc/resolver/minikube-test
-
-  ```sh
-  domain test
-  nameserver <minikube ip>
-  search_order 1
-  timeout 5
+  # run minikube tunnel
+  minikube tunnel -p classlab
   ```
 
 ### Installation
@@ -163,7 +149,13 @@ Only tested on MacOS.
    docker compose up
    ```
 
-7. Prometheus proxy
+7. Run minikube tunnel
+
+   ```sh
+   minikube tunnel -p classlab
+   ```
+
+8. Prometheus proxy
 
    ```sh
    kubectl port-forward svc/kube-prometheus-stack-prometheus 9090:9090 -n monitoring

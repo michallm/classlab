@@ -75,16 +75,9 @@ spec:
         user: jankow
         tier: mysql
     spec:
-      securityContext:
-        runAsUser: 1000
-        runAsGroup: 3000
-        fsGroup: 2000
-        seccompProfile:
-          type: RuntimeDefault
-        runAsNonRoot: true
       containers:
         - name: mysql-phpmyadmin
-          image: hsheth2/mysql-low-memory
+          image: mysql
           ports:
             - containerPort: 3306
               name: mysql
@@ -97,51 +90,45 @@ spec:
               readOnly: true
             - name: mysql-phpmyadmin
               mountPath: /var/lib/mysql
-          resources:
-            limits:
-              cpu: "600m"
-              ephemeral-storage: "1Gi"
-              memory: "500Mi"
-            requests:
-              cpu: "100m"
-              ephemeral-storage: "1Gi"
-              memory: "400Mi"
-          livenessProbe:
-            exec:
-              command:
-                - mysqladmin
-                - ping
-            initialDelaySeconds: 5
-            periodSeconds: 10
-            timeoutSeconds: 1
-            failureThreshold: 3
-            successThreshold: 1
-          readinessProbe:
-            exec:
-              command:
-                - mysqladmin
-                - ping
-            initialDelaySeconds: 5
-            periodSeconds: 10
-            timeoutSeconds: 1
-            failureThreshold: 3
-            successThreshold: 1
-          startupProbe:
-            exec:
-              command:
-                - mysqladmin
-                - ping
-            initialDelaySeconds: 15
-            periodSeconds: 10
-            timeoutSeconds: 1
-            failureThreshold: 10
-            successThreshold: 1
-          securityContext:
-            allowPrivilegeEscalation: false
-            runAsNonRoot: true
-            capabilities:
-              drop:
-                - ALL
+          # resources:
+          #   limits:
+          #     cpu: "600m"
+          #     ephemeral-storage: "1Gi"
+          #     memory: "500Mi"
+          #   requests:
+          #     cpu: "100m"
+          #     ephemeral-storage: "1Gi"
+          #     memory: "400Mi"
+          # livenessProbe:
+          #   exec:
+          #     command:
+          #       - mysqladmin
+          #       - ping
+          #   initialDelaySeconds: 5
+          #   periodSeconds: 10
+          #   timeoutSeconds: 1
+          #   failureThreshold: 3
+          #   successThreshold: 1
+          # readinessProbe:
+          #   exec:
+          #     command:
+          #       - mysqladmin
+          #       - ping
+          #   initialDelaySeconds: 5
+          #   periodSeconds: 10
+          #   timeoutSeconds: 1
+          #   failureThreshold: 3
+          #   successThreshold: 1
+          # startupProbe:
+          #   exec:
+          #     command:
+          #       - mysqladmin
+          #       - ping
+          #   initialDelaySeconds: 15
+          #   periodSeconds: 10
+          #   timeoutSeconds: 1
+          #   failureThreshold: 10
+          #   successThreshold: 1
       volumes:
         - name: secret-volume
           secret:
@@ -149,8 +136,6 @@ spec:
         - name: mysql-phpmyadmin
           persistentVolumeClaim:
             claimName: mysql-phpmyadmin
-      
-
 
 # phpmyadmin
 ---
@@ -199,10 +184,6 @@ spec:
         user: jankow
         tier: phpmyadmin
     spec:
-      securityContext:
-        fsGroup: 1001
-        seccompProfile:
-          type: RuntimeDefault
       containers:
         - name: mysql-phpmyadmin-phpmyadmin
           image: bitnami/phpmyadmin
@@ -214,194 +195,214 @@ spec:
               value: mysql-phpmyadmin-mysql
             - name: DATABASE_PORT_NUMBER
               value: "3306"
-            - name: PHPMYADMIN_ABSOLUTE_URI
-              value: https://mysql-phpmyadmin.apps.classlab.pl
-          livenessProbe:
-            initialDelaySeconds: 30
-            timeoutSeconds: 30
-            periodSeconds: 10
-            successThreshold: 1
-            failureThreshold: 6
-            httpGet:
-              path: /
-              port: 8080
-          readinessProbe:
-            initialDelaySeconds: 30
-            timeoutSeconds: 30
-            periodSeconds: 10
-            successThreshold: 1
-            failureThreshold: 6
-            httpGet:
-              path: /
-              port: 8080
-          startupProbe:
-            initialDelaySeconds: 10
-            timeoutSeconds: 5
-            periodSeconds: 10
-            successThreshold: 1
-            failureThreshold: 6
-            httpGet:
-              path: /
-              port: 8080
-          securityContext:
-            allowPrivilegeEscalation: false
-            runAsUser: 1001
-            runAsNonRoot: true
-            capabilities:
-              drop:
-                - ALL
-          resources:
-            limits:
-              cpu: "600m"
-              ephemeral-storage: "200Mi"
-              memory: "200Mi"
-            requests:
-              cpu: "20m"
-              ephemeral-storage: "100Mi"
-              memory: "150Mi"
-      
+            # - name: PHPMYADMIN_ABSOLUTE_URI
+            #   value: https://mysql-phpmyadmin.apps.classlab.pl
+          # livenessProbe:
+          #   initialDelaySeconds: 30
+          #   timeoutSeconds: 30
+          #   periodSeconds: 10
+          #   successThreshold: 1
+          #   failureThreshold: 6
+          #   httpGet:
+          #     path: /
+          #     port: 8080
+          # readinessProbe:
+          #   initialDelaySeconds: 30
+          #   timeoutSeconds: 30
+          #   periodSeconds: 10
+          #   successThreshold: 1
+          #   failureThreshold: 6
+          #   httpGet:
+          #     path: /
+          #     port: 8080
+          # startupProbe:
+          #   initialDelaySeconds: 10
+          #   timeoutSeconds: 5
+          #   periodSeconds: 10
+          #   successThreshold: 1
+          #   failureThreshold: 6
+          #   httpGet:
+          #     path: /
+          #     port: 8080
+          # securityContext:
+          #   allowPrivilegeEscalation: false
+          #   runAsUser: 1001
+          #   runAsNonRoot: true
+          #   capabilities:
+          #     drop:
+          #       - ALL
+          # resources:
+          #   limits:
+          #     cpu: "600m"
+          #     ephemeral-storage: "200Mi"
+          #     memory: "200Mi"
+          #   requests:
+          #     cpu: "20m"
+          #     ephemeral-storage: "100Mi"
+          #     memory: "150Mi"
+      # 
 
 
----
-apiVersion: traefik.containo.us/v1alpha1
-kind: IngressRoute
-metadata:
-  name: mysql-phpmyadmin-phpmyadmin
-  namespace: default
-  annotations:
-    cloud.google.com/neg: '{"ingress": true}'
-spec:
-  entryPoints:
-    - web
-    - websecure
-  routes:
-    - match: Host(`mysql-phpmyadmin.apps.classlab.pl`)
-      kind: Rule
-      services:
-        - name: mysql-phpmyadmin-phpmyadmin
-          port: 8080
-
-
+# ---
+# apiVersion: traefik.containo.us/v1alpha1
+# kind: IngressRoute
+# metadata:
+#   name: mysql-phpmyadmin-phpmyadmin
+#   namespace: default
+#   annotations:
+#     cloud.google.com/neg: '{"ingress": true}'
+# spec:
+#   entryPoints:
+#     - web
+#     - websecure
+#   routes:
+#     - match: Host(`mysql-phpmyadmin.apps.classlab.pl`)
+#       kind: Rule
+#       services:
+#         - name: mysql-phpmyadmin-phpmyadmin
+#           port: 8080
 ---
 apiVersion: networking.k8s.io/v1
-kind: NetworkPolicy
+kind: Ingress
 metadata:
-  name: mysql-phpmyadmin-phpmyadmin
+  name: mysql-phpmyadmin
   namespace: default
 spec:
-  podSelector:
-    matchLabels:
-      app: mysql-phpmyadmin
-      user: jankow
-      tier: phpmyadmin
-  policyTypes:
-    - Ingress
-    - Egress
-  ingress:
-    - from:
-        - namespaceSelector:
-            matchLabels:
-              name: traefik
-  egress:
-    - to:
-        - podSelector:
-            matchLabels:
-              app: mysql-phpmyadmin
-              user: jankow
-              tier: mysql
-        - ipBlock:
-            cidr: 0.0.0.0/0
-            except:
-              - 10.0.0.0/16
-              - 10.1.0.0/16
-              - 10.2.0.0/16
-    - ports:
-        - port: 53
-          protocol: TCP
-        - port: 53
-          protocol: UDP
----
-apiVersion: networking.k8s.io/v1
-kind: NetworkPolicy
-metadata:
-  name: mysql-phpmyadmin-mysql
-  namespace: default
-spec:
-  podSelector:
-    matchLabels:
-      app: mysql-phpmyadmin
-      user: jankow
-      tier: mysql
-  policyTypes:
-    - Ingress
-    - Egress
-  ingress:
-    - {}
-  egress:
-   - {}
+  ingressClassName: nginx
+  rules:
+  - host: mysql-phpmyadmin.apps.classlab.localhost
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: mysql-phpmyadmin-phpmyadmin
+            port:
+              number: 8080
 
----
-apiVersion: keda.sh/v1alpha1
-kind: ScaledObject
-metadata:
-  name: mysql-phpmyadmin-phpmyadmin
-  namespace: default
-spec:
-  scaleTargetRef:
-    name: mysql-phpmyadmin-phpmyadmin
-  pollingInterval: 15
-  cooldownPeriod: 600
-  minReplicaCount: 0
-  maxReplicaCount: 1
-  advanced:
-    horizontalPodAutoscalerConfig:
-      behavior:
-        scaleDown:
-          stabilizationWindowSeconds: 600
-          policies:
-          - type: Percent
-            value: 100
-            periodSeconds: 15
-        scaleUp:
-          selectPolicy: Disabled
-  triggers:
-    - type: prometheus
-      metricType: Value
-      metadata:
-        serverAddress: http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090
-        query: max(max(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{pod=~"mysql-phpmyadmin-phpmyadmin.*", namespace="default" } * 100) > bool 1 or (time() - kube_pod_created{pod=~"mysql-phpmyadmin-phpmyadmin.*", namespace="default"} < bool 300))
-        threshold: "1"
-        ignoreNullValues: "false"
 
----
-apiVersion: keda.sh/v1alpha1
-kind: ScaledObject
-metadata:
-  name: mysql-phpmyadmin-mysql
-  namespace: default
-spec:
-  scaleTargetRef:
-    name: mysql-phpmyadmin-mysql
-  pollingInterval: 15
-  cooldownPeriod: 600
-  minReplicaCount: 0
-  maxReplicaCount: 1
-  advanced:
-    horizontalPodAutoscalerConfig:
-      behavior:
-        scaleDown:
-          stabilizationWindowSeconds: 600
-          policies:
-          - type: Percent
-            value: 100
-            periodSeconds: 15
-        scaleUp:
-          selectPolicy: Disabled
-  triggers:
-    - type: prometheus
-      metricType: Value
-      metadata:
-        serverAddress: http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090
-        query: max(max(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{pod=~"mysql-phpmyadmin-phpmyadmin.*", namespace="default" } * 100) > bool 1 or (time() - kube_pod_created{pod=~"mysql-phpmyadmin-phpmyadmin.*", namespace="default"} < bool 300))
-        threshold: "1"
-        ignoreNullValues: "false"
+
+# ---
+# apiVersion: networking.k8s.io/v1
+# kind: NetworkPolicy
+# metadata:
+#   name: mysql-phpmyadmin-phpmyadmin
+#   namespace: default
+# spec:
+#   podSelector:
+#     matchLabels:
+#       app: mysql-phpmyadmin
+#       user: jankow
+#       tier: phpmyadmin
+#   policyTypes:
+#     - Ingress
+#     - Egress
+#   ingress:
+#     - from:
+#         - namespaceSelector:
+#             matchLabels:
+#               name: traefik
+#   egress:
+#     - to:
+#         - podSelector:
+#             matchLabels:
+#               app: mysql-phpmyadmin
+#               user: jankow
+#               tier: mysql
+#         - ipBlock:
+#             cidr: 0.0.0.0/0
+#             except:
+#               - 10.0.0.0/16
+#               - 10.1.0.0/16
+#               - 10.2.0.0/16
+#     - ports:
+#         - port: 53
+#           protocol: TCP
+#         - port: 53
+#           protocol: UDP
+# ---
+# apiVersion: networking.k8s.io/v1
+# kind: NetworkPolicy
+# metadata:
+#   name: mysql-phpmyadmin-mysql
+#   namespace: default
+# spec:
+#   podSelector:
+#     matchLabels:
+#       app: mysql-phpmyadmin
+#       user: jankow
+#       tier: mysql
+#   policyTypes:
+#     - Ingress
+#     - Egress
+#   ingress:
+#     - {}
+#   egress:
+#    - {}
+
+# ---
+# apiVersion: keda.sh/v1alpha1
+# kind: ScaledObject
+# metadata:
+#   name: mysql-phpmyadmin-phpmyadmin
+#   namespace: default
+# spec:
+#   scaleTargetRef:
+#     name: mysql-phpmyadmin-phpmyadmin
+#   pollingInterval: 15
+#   cooldownPeriod: 600
+#   minReplicaCount: 0
+#   maxReplicaCount: 1
+#   advanced:
+#     horizontalPodAutoscalerConfig:
+#       behavior:
+#         scaleDown:
+#           stabilizationWindowSeconds: 600
+#           policies:
+#           - type: Percent
+#             value: 100
+#             periodSeconds: 15
+#         scaleUp:
+#           selectPolicy: Disabled
+#   triggers:
+#     - type: prometheus
+#       metricType: Value
+#       metadata:
+#         serverAddress: http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090
+#         query: max(max(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{pod=~"mysql-phpmyadmin-phpmyadmin.*", namespace="default" } * 100) > bool 1 or (time() - kube_pod_created{pod=~"mysql-phpmyadmin-phpmyadmin.*", namespace="default"} < bool 300))
+#         threshold: "1"
+#         ignoreNullValues: "false"
+
+# ---
+# apiVersion: keda.sh/v1alpha1
+# kind: ScaledObject
+# metadata:
+#   name: mysql-phpmyadmin-mysql
+#   namespace: default
+# spec:
+#   scaleTargetRef:
+#     name: mysql-phpmyadmin-mysql
+#   pollingInterval: 15
+#   cooldownPeriod: 600
+#   minReplicaCount: 0
+#   maxReplicaCount: 1
+#   advanced:
+#     horizontalPodAutoscalerConfig:
+#       behavior:
+#         scaleDown:
+#           stabilizationWindowSeconds: 600
+#           policies:
+#           - type: Percent
+#             value: 100
+#             periodSeconds: 15
+#         scaleUp:
+#           selectPolicy: Disabled
+#   triggers:
+#     - type: prometheus
+#       metricType: Value
+#       metadata:
+#         serverAddress: http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090
+#         query: max(max(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{pod=~"mysql-phpmyadmin-phpmyadmin.*", namespace="default" } * 100) > bool 1 or (time() - kube_pod_created{pod=~"mysql-phpmyadmin-phpmyadmin.*", namespace="default"} < bool 300))
+#         threshold: "1"
+#         ignoreNullValues: "false"

@@ -53,7 +53,6 @@ ClassLab is a platform for deploying and managing applications. It is designed f
 ### Built With
 
 - [![Django][Django.com]][Django-url]
-- [![Bootstrap][Bootstrap.com]][Bootstrap-url]
 - [![Docker][Docker.com]][Docker-url]
 - [![Kubernetes][Kubernetes.com]][Kubernetes-url]
 
@@ -219,8 +218,6 @@ Project Link: [https://github.com/michallm/classlab](https://github.com/michallm
 [product-screenshot]: images/preview.png
 [Django.com]: https://img.shields.io/badge/django-092E20?style=for-the-badge&logo=django&logoColor=white
 [Django-url]: https://www.djangoproject.com/
-[Bootstrap.com]: https://img.shields.io/badge/Bootstrap-563D7C?style=for-the-badge&logo=bootstrap&logoColor=white
-[Bootstrap-url]: https://getbootstrap.com
 [Docker.com]: https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white
 [Docker-url]: https://www.docker.com/
 [Kubernetes.com]: https://img.shields.io/badge/Kubernetes-326CE5?style=for-the-badge&logo=kubernetes&logoColor=white

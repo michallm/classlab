@@ -7,7 +7,7 @@ watchfiles==0.22.0  # https://github.com/samuelcolvin/watchfiles
 
 # Testing
 # ------------------------------------------------------------------------------
-mypy==1.10.1  # https://github.com/python/mypy
+mypy==1.11.1  # https://github.com/python/mypy
 django-stubs==4.2.3  # https://github.com/typeddjango/django-stubs
 pytest==8.2.2  # https://github.com/pytest-dev/pytest
 pytest-sugar==1.0.0  # https://github.com/Frozenball/pytest-sugar
@@ -19,10 +19,10 @@ pytest-sugar==1.0.0  # https://github.com/Frozenball/pytest-sugar
 
 # Code quality
 # ------------------------------------------------------------------------------
-ruff==0.4.10  # https://github.com/astral-sh/ruff
-coverage==7.5.4  # https://github.com/nedbat/coveragepy
+ruff==0.5.5  # https://github.com/astral-sh/ruff
+coverage==7.6.0  # https://github.com/nedbat/coveragepy
 djlint==1.34.1  # https://github.com/Riverside-Healthcare/djLint
-pre-commit==3.7.1  # https://github.com/pre-commit/pre-commit
+pre-commit==3.8.0  # https://github.com/pre-commit/pre-commit
 
 # Django
 # ------------------------------------------------------------------------------

@@ -1,0 +1,8 @@
+site_name: ClassLab
+site_url: https://docs.classlab.dev
+
+nav:
+  - Home: index.md
+
+theme:
+  name: 'material'

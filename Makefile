@@ -25,3 +25,6 @@ start:
 dashboard:
 	@echo "Starting Kubernetes Dashboard..."
 	@minikube dashboard --profile=classlab
+
+docs:
+	docker compose -f docker-compose.docs.yml up

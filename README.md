@@ -139,7 +139,7 @@ Only tested on MacOS.
    if not used then it is required to run the following command to setup permissions:
 
    ```sh
-   docker compose run --rm django python manage.py permissions
+   docker compose run --rm django python manage.py set_permissions
    ```
 
 6. Start the application

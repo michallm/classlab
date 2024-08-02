@@ -15,3 +15,8 @@ terraform
 playground
 infra
 templates
+scripts
+node_modules
+kubeconfig
+images
+cypress

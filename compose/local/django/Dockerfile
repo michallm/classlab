@@ -16,6 +16,9 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
 # Requirements are installed here to ensure they will be cached.
 COPY ./requirements .
 
+# Update pip
+RUN pip install --upgrade pip
+
 # Create Python Dependency and Sub-Dependency Wheels.
 RUN pip wheel --wheel-dir /usr/src/app/wheels  \
   -r ${BUILD_ENVIRONMENT}.txt
@@ -46,6 +49,9 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
 # All absolute dir copies ignore workdir instruction. All relative dir copies are wrt to the workdir instruction
 # copy python dependency wheels from python-build-stage
 COPY --from=python-build-stage /usr/src/app/wheels  /wheels/
+
+# update pip
+RUN pip install --upgrade pip
 
 # use wheels to install python dependencies
 RUN pip install --no-cache-dir --no-index --find-links=/wheels/ /wheels/* \

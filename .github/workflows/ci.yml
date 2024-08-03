@@ -52,3 +52,17 @@ jobs:
 
       - name: Tear down the Stack
         run: docker compose down
+
+  cypress:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Cypress run
+        uses: cypress-io/github-action@v6
+        with:
+          build: docker compose build
+          start: docker compose up
+          wait-on: 'http://localhost:8000'

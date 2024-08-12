@@ -19,7 +19,7 @@ django-crispy-forms==2.3  # https://github.com/django-crispy-forms/django-crispy
 crispy-bootstrap5==2024.2  # https://github.com/django-crispy-forms/crispy-bootstrap5
 django-redis==5.4.0  # https://github.com/jazzband/django-redis
 django_ace==1.32.4  #
-django-reversion==5.0.12  #
+django-reversion==5.1.0  #
 django-formtools==2.5.1
 django-select2==8.2.1
 django-cookie-consent==0.6.0

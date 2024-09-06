@@ -301,25 +301,41 @@ spec:
           persistentVolumeClaim:
             claimName: {{ app_id }}-wordpress
 
+# ---
+# apiVersion: networking.k8s.io/v1
+# kind: Ingress
+# metadata:
+#   name: {{ app_id }}-wordpress
+#   namespace: {{ namespace }}
+# spec:
+#   ingressClassName: nginx
+#   rules:
+#   - host: {{ app_id }}.{{ proxy_domain }}
+#     http:
+#       paths:
+#       - path: /
+#         pathType: Prefix
+#         backend:
+#           service:
+#             name: {{ app_id }}-wordpress
+#             port:
+#               number: 8080
 ---
-apiVersion: networking.k8s.io/v1
-kind: Ingress
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
 metadata:
   name: {{ app_id }}-wordpress
   namespace: {{ namespace }}
 spec:
-  ingressClassName: nginx
-  rules:
-  - host: {{ app_id }}.{{ proxy_domain }}
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: {{ app_id }}-wordpress
-            port:
-              number: 8080
+  entryPoints:
+    - web
+    - websecure
+  routes:
+    - match: Host(`{{ app_id }}.{{ proxy_domain }}`)
+      kind: Rule
+      services:
+        - name: {{ app_id }}-wordpress
+          port: 8080
 
 # ---
 # apiVersion: networking.k8s.io/v1

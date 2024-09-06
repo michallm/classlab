@@ -69,10 +69,12 @@ Only tested on MacOS.
 - Python
 - Docker
 - Docker Compose
-- Helm
+- Helm and Helmfile
 
   ```sh
   brew install helm
+  brew install helmfile
+  helmfile init
   ```
 
 - Kubernetes(minikube)

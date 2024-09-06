@@ -666,3 +666,5 @@ vendors.js
 *.min.js.map
 classlab/static/webpack_bundles/
 webpack-stats.json
+
+kubeconfig.yaml

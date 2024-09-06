@@ -4,6 +4,7 @@ set -o errexit
 set -o pipefail
 set -o nounset
 
+sed -e 's/127.0.0.1/k8s/g' kubeconfig.yaml
 
 python manage.py migrate
 exec python manage.py runserver 0.0.0.0:8000

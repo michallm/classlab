@@ -87,7 +87,6 @@ THIRD_PARTY_APPS = [
 ]
 
 LOCAL_APPS = [
-    "classlab.core",
     "classlab.accounts",
     "classlab.users",
     "classlab.cloud",
@@ -97,6 +96,7 @@ LOCAL_APPS = [
     "classlab.students",
     "classlab.classes",
     "classlab.apps",
+    "classlab.core",
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS

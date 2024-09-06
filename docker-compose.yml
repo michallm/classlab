@@ -6,13 +6,17 @@ services:
     image: classlab_local_django
     container_name: classlab_local_django
     depends_on:
-      - postgres
-      - redis
-      - mailpit
-      - k8s
+      postgres:
+        condition: service_started
+      redis:
+        condition: service_started
+      mailpit:
+        condition: service_started
+      init-k8s:
+        condition: service_completed_successfully
     volumes:
       - .:/app:z
-      - ./kubeconfig.yaml:/kube/config
+      - ./kubeconfig:/kube/config
     environment:
       - USE_DOCKER=yes
       - PYTHONDEVMODE=1
@@ -22,9 +26,6 @@ services:
       - CELERY_FLOWER_USER=debug
       - CELERY_FLOWER_PASSWORD=debug
       - CONTACT_EMAIL=kontakt@classlab.pl
-      - K8S_HOST=ur
-      - K8S_TOKEN=token
-      - K8S_CA_CERT=cert
       - PROXY_DOMAIN=apps.classlab.localhost
       - DATABASE_URL=postgres://postgres:postgres@postgres:5432/classlab
       - KUBECONFIG=/kube/config
@@ -42,6 +43,8 @@ services:
       - POSTGRES_DB=classlab
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
     ports:
       - "5432:5432"
 
@@ -86,7 +89,7 @@ services:
     command: /start-flower
 
   k8s:
-    image: "rancher/k3s:v1.31.0-k3s1"
+    image: rancher/k3s:v1.31.0-k3s1
     container_name: classlab_local_k8s
     command: server --tls-san k8s
     tmpfs:
@@ -98,16 +101,28 @@ services:
         soft: 65535
         hard: 65535
     privileged: true
-    restart: always
     environment:
     - K3S_TOKEN=token
     - K3S_KUBECONFIG_OUTPUT=/output/kubeconfig.yaml
     - K3S_KUBECONFIG_MODE=666
     volumes:
-    # - k3s-server:/var/lib/rancher/k3s
-    # This is just so that we get the kubeconfig file out
+    - k8s-dev:/var/lib/rancher/k3s
     - .:/output
     ports:
     - 6443:6443  # Kubernetes API Server
     - 80:80      # Ingress controller port 80
     - 443:443    # Ingress controller port 443
+
+  init-k8s:
+    image: busybox
+    container_name: classlab_local_init_k8s
+    depends_on:
+      - k8s
+    volumes:
+      - .:/app:z
+    command: >
+      /bin/sh -c "cp /app/kubeconfig.yaml /app/kubeconfig &&
+      sed -i 's/127.0.0.1/k8s/g' /app/kubeconfig"
+
+volumes:
+  k8s-dev:

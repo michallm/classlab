@@ -28,3 +28,10 @@ dashboard:
 
 docs:
 	docker compose -f docker-compose.docs.yml up
+
+helm:
+	helmfile --kubeconfig kubeconfig.yaml sync
+
+kubeconfig:
+	cp kubeconfig.yaml kubeconfig
+	sed -i '' -e 's/127.0.0.1/k8s/g' kubeconfig

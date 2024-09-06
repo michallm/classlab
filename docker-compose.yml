@@ -6,14 +6,9 @@ services:
     image: classlab_local_django
     container_name: classlab_local_django
     depends_on:
-      postgres:
-        condition: service_started
-      redis:
-        condition: service_started
-      mailpit:
-        condition: service_started
-      init-k8s:
-        condition: service_completed_successfully
+      - postgres
+      - redis
+      - mailpit
     volumes:
       - .:/app:z
       - ./kubeconfig:/kube/config

@@ -107,6 +107,7 @@ services:
     - 6443:6443  # Kubernetes API Server
     - 80:80      # Ingress controller port 80
     - 443:443    # Ingress controller port 443
+    - 9090:30090  # Prometheus
 
   init-k8s-kubeconfig:
     image: busybox

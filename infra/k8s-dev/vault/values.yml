@@ -1,0 +1,7 @@
+server:
+  ingress:
+    enabled: true
+    ingressClassName: traefik
+    pathType: Prefix
+    hosts:
+      - host: vault.classlab.localhost

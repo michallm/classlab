@@ -5,6 +5,9 @@ repositories:
   - name: prometheus-community
     url: https://prometheus-community.github.io/helm-charts
 
+  - name: hashicorp
+    url: https://helm.releases.hashicorp.com
+
 releases:
   - name: keda
     namespace: keda
@@ -18,3 +21,10 @@ releases:
     disableValidationOnInstall: true
     values:
       - ./infra/k8s-dev/kube-prometheus/values.yml
+
+  - name: vault
+    namespace: vault
+    chart: hashicorp/vault
+    createNamespace: true
+    values:
+      - ./infra/k8s-dev/vault/values.yml

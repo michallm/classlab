@@ -31,6 +31,9 @@ class CloudMetrics:
             disable_ssl=settings.PROMETHEUS_DISABLE_SSL,
         )
 
+    def test_connection(self) -> bool:
+        return self.prom.custom_query("up")
+
     def get_resource(
         self,
         resource_type: str,

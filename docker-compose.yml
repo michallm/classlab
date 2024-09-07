@@ -86,7 +86,7 @@ services:
   k8s:
     image: rancher/k3s:v1.31.0-k3s1
     container_name: classlab_local_k8s
-    command: server --tls-san k8s
+    command: server --tls-san k8s --secrets-encryption
     tmpfs:
     - /run
     - /var/run

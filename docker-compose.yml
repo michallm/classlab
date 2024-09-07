@@ -108,9 +108,9 @@ services:
     - 80:80      # Ingress controller port 80
     - 443:443    # Ingress controller port 443
 
-  init-k8s:
+  init-k8s-kubeconfig:
     image: busybox
-    container_name: classlab_local_init_k8s
+    container_name: classlab_local_init_k8s_kubeconfig
     depends_on:
       - k8s
     volumes:
@@ -118,6 +118,15 @@ services:
     command: >
       /bin/sh -c "cp /app/kubeconfig.yaml /app/kubeconfig &&
       sed -i 's/127.0.0.1/k8s/g' /app/kubeconfig"
+
+  init-k8s-helm:
+    image: chatwork/helmfile
+    container_name: classlab_local_init_k8s_helm
+    depends_on:
+      - k8s
+    volumes:
+      - .:/app:z
+    command: --kubeconfig /app/kubeconfig --file /app/helmfile.yaml sync
 
 volumes:
   k8s-dev:

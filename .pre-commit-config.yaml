@@ -1,4 +1,4 @@
-exclude: '^docs/|/migrations/|devcontainer.json|templates/|infra/|classlab/static/css/bootstrap.min.css|classlab/static/js/htmx.min.js|classlab/static/js/bootstrap-show-password.min.js|classlab/static/js/bootstrap.bundle.min.js|classlab/static/js/jquery.min.js|classlab/static/css/fontawesome.min.css|classlab/static/css/solid.min.css|classlab/static/js/bundle.tracing.replay.min.js'
+exclude: '^docs/|/migrations/|devcontainer.json|templates/|infra/|classlab/static/css/bootstrap.min.css|classlab/static/js/htmx.min.js|classlab/static/js/bootstrap-show-password.min.js|classlab/static/js/bootstrap.bundle.min.js|classlab/static/js/jquery.min.js|classlab/static/css/fontawesome.min.css|classlab/static/css/solid.min.css|classlab/static/js/bundle.tracing.replay.min.js|kubeconfig.yaml|kubeconfig'
 
 default_stages: [commit]
 

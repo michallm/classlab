@@ -54,7 +54,7 @@ jobs:
         uses: cypress-io/github-action@v6
         with:
           build: docker compose -f docker-compose.ci.yml build
-          start: docker compose up
+          start: docker compose -f docker-compose.ci.yml up
           wait-on: 'http://localhost:8000'
 
       - name: Tear down the Stack

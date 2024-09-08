@@ -42,23 +42,23 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Build the Stack
-        run: docker compose build
+        run: docker compose -f docker-compose.ci.yml build
 
       - name: Run DB Migrations
-        run: docker compose run --rm django python manage.py migrate
+        run: docker compose -f docker-compose.ci.yml run --rm django python manage.py migrate
 
       - name: Run Django Tests
-        run: docker compose run --rm django pytest
+        run: docker compose -f docker-compose.ci.yml run --rm django pytest
 
       - name: Cypress run
         uses: cypress-io/github-action@v6
         with:
-          build: docker compose build
+          build: docker compose -f docker-compose.ci.yml build
           start: docker compose up
           wait-on: 'http://localhost:8000'
 
       - name: Tear down the Stack
-        run: docker compose down
+        run: docker compose -f docker-compose.ci.yml  down
 
   # cypress:
   #   runs-on: ubuntu-latest

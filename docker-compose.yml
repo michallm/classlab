@@ -9,6 +9,7 @@ services:
       - postgres
       - redis
       - mailpit
+      - k8s
     volumes:
       - .:/app:z
       - ./kubeconfig:/kube/config

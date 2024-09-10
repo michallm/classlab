@@ -5,6 +5,7 @@ set -o pipefail
 set -o nounset
 
 python /app/manage.py migrate
+python /app/manage.py set_permissions
 python /app/manage.py compilemessages
 python /app/manage.py collectstatic --noinput
 

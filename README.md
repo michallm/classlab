@@ -83,35 +83,6 @@ Only tested on MacOS.
   helmfile init
   ```
 
-- Kubernetes(minikube)
-
-  ```sh
-  # create minikube cluster
-  minikube start --network-plugin=cni --cni=calico --profile=classlab --driver=docker --embed-certs --apiserver-names host.docker.internal --addons=ingress-dns,ingress,metrics-server,gvisor --install-addons=true --container-runtime=containerd --docker-opt containerd=/var/run/containerd/containerd.sock
-
-  # copy kube config to kubeconfig file in root in repo
-  kubectl config view --raw > kubeconfig
-
-  # replace 127.0.0.1 in kubeconfig with host.docker.internal
-  sed -i '' -e 's/127.0.0.1/host.docker.internal/g' kubeconfig
-
-  # create namespace for an organisation that will be using the platform
-  kubectl create namespace <name>
-
-  # keda
-  helm repo add kedacore https://kedacore.github.io/charts
-  helm repo update
-  helm install keda kedacore/keda --namespace keda --create-namespace
-
-  # kube-prometheus-stack
-  helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
-  helm repo update
-  helm install kube-prometheus-stack prometheus-community/kube-prometheus-stack --namespace monitoring --create-namespace -f ./infra/k8s-dev/kube-prometheus/values.yml
-
-  # run minikube tunnel
-  minikube tunnel -p classlab
-  ```
-
 ### Installation
 
 1. Clone the repo
@@ -129,48 +100,46 @@ Only tested on MacOS.
 3. Apply migrations
 
    ```
-    docker compose run --rm django python manage.py migrate
+   docker compose run --rm django python manage.py migrate
    ```
 
-4. Create superuser
+4. Load seed data
 
    ```
-   docker compose run --rm django python manage.py createsuperuser
+   docker compose run --rm django python manage.py loaddata fixtures/seed.json
    ```
 
-5. Load seed data
-
-   ```
-   docker compose run --rm django python manage.py loaddata seed.json
-   ```
-
-   if not used then it is required to run the following command to setup permissions:
-
-   ```sh
-   docker compose run --rm django python manage.py set_permissions
-   ```
-
-6. Start the application
+5. Start the application
 
    ```
    docker compose up
    ```
 
-7. Run minikube tunnel
-
-   ```sh
-   minikube tunnel -p classlab
-   ```
-
-8. Prometheus proxy
-
-   ```sh
-   kubectl port-forward svc/kube-prometheus-stack-prometheus 9090:9090 -n monitoring
-   ```
-
 <!-- USAGE -->
 
 ## Usage
+
+### Accounts
+
+#### Superuser
+
+email: admin@example.com
+password: zaq1@WSX
+
+#### Organisation Admin
+
+email: admin@test.com
+password: zaq1@WSX
+
+#### Sample Teacher
+
+email: teacher@test.com
+password: zaq1@WSX
+
+#### Sample Student
+
+email: student@test.com
+password: zaq1@WSX
 
 ### Services
 
@@ -179,9 +148,6 @@ Only tested on MacOS.
 - Django admin: http://localhost:8000/admin
 - Website: http://localhost:8000
 - Prometheus: http://localhost:9090
-  ```sh
-    kubectl port-forward svc/kube-prometheus-stack-prometheus 9090:9090 -n monitoring
-  ```
 - Grafana: http://localhost:8080
   ```sh
   kubectl port-forward svc/kube-prometheus-stack-grafana 8080:80 -n monitoring

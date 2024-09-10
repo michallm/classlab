@@ -46,7 +46,9 @@
 
 ## Demo
 
-[![ClassLab demo](https://img.youtube.com/vi/UlLlNjXtSz4/0.jpg)](https://www.youtube.com/watch?v=UlLlNjXtSz4)
+Click to watch the demo:
+
+[![ClassLab demo](https://github.com/michallm/classlab/blob/main/images/preview.png?raw=true)](https://www.youtube.com/watch?v=UlLlNjXtSz4)
 
 <!-- ABOUT THE PROJECT -->
 

@@ -66,7 +66,7 @@ ClassLab is a platform for deploying and managing applications. It is designed f
 
 ## Getting Started
 
-To get a local copy up and running follow these simple steps(it's not a easy task):
+To get a local copy up and running follow these simple steps(it's not an easy task):
 
 ### Prerequisites
 

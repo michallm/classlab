@@ -1437,6 +1437,14 @@
   },
   {
     "model": "sessions.session",
+    "pk": "guw4f9kizk4aiixp4yjlli7ksyb69e88",
+    "fields": {
+      "session_data": ".eJxVjM0OwiAQhN-FsyGB8ldv-iJkWZZAbGgicDK-u9T0oHOb-WbmxTyMnv1o9PQlsitT7PKbBcAH1QPAth0xB8R91M6_nRM3fpuOai8Ivez1fq7-rjK0PH-clIEMThFZkoKWiMk4UGBU0tpaiKCVg0WS0YJcEHqdNbesmOQKhr0_5mQ85g:1so557:aRnSFnyXZ2HfTPUBihurc0fnAdouip6vj2Ijr_bBtdM",
+      "expire_date": "2024-09-24T17:55:13.793Z"
+    }
+  },
+  {
+    "model": "sessions.session",
     "pk": "pf6x2u2w6d89w86lfqyn9ii39yiaq10f",
     "fields": {
       "session_data": ".eJxVjEEOwiAQRe_C2jS1QCvd6UXIMAwpkWBTIBqb3t1WG6O7-e_9-TPTUPKgS6JJe8t6xtnhlxnAK8VNQAgbrgDxVmKu3p1dp-q8JorZI2R_i5f9629qgDSsOy0nqbhRqpONOULXkACheC1l29UtWicaYZxxtbS1wKZFwZ2z0pAVJ1TquI7e_RMmq2EcNU4EmfSHsH5mKdPI-lhCOLxvbSHDKpY9Oh8ofTI98gRfvywv7OlclA:1so4ta:96AcopV4nDXac9fP8ZcvnyJq7Sfc6C5jbhF-0owi9Xs",
@@ -1604,7 +1612,7 @@
     "fields": {
       "user": 4,
       "email": "teacher@test.com",
-      "verified": false,
+      "verified": true,
       "primary": true
     }
   },
@@ -1623,7 +1631,7 @@
   {
     "model": "django_celery_beat.periodictasks",
     "pk": 1,
-    "fields": { "last_update": "2024-09-10T17:37:38.470Z" }
+    "fields": { "last_update": "2024-09-10T17:54:02.897Z" }
   },
   {
     "model": "django_celery_beat.periodictask",
@@ -1649,7 +1657,7 @@
       "enabled": true,
       "last_run_at": null,
       "total_run_count": 0,
-      "date_changed": "2024-09-10T17:37:38.469Z",
+      "date_changed": "2024-09-10T17:54:02.896Z",
       "description": ""
     }
   },
@@ -1736,8 +1744,8 @@
     "model": "users.user",
     "pk": 4,
     "fields": {
-      "password": "!GNdUx8pOfxYfTnxX5PwCiBBDzPzOcQ1R1CIcY8D2",
-      "last_login": null,
+      "password": "argon2$argon2id$v=19$m=102400,t=2,p=8$NGlsemxQU00yZ3dkQm01eXFRb1BYUA$zPyPxGpw7F/JP8Jb3c6bF8lq+MmUWb0YhQvl+zakF2E",
+      "last_login": "2024-09-10T17:55:06.240Z",
       "is_superuser": false,
       "user_id": "ipjwb45py6by",
       "user_type": "TEACHER",

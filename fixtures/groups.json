@@ -1,0 +1,32 @@
+[
+  {
+    "model": "auth.group",
+    "pk": 1,
+    "fields": {
+      "name": "Administrators",
+      "permissions": [
+        101, 112, 113, 114, 115, 92, 107, 108, 109, 111, 110, 102, 103, 104,
+        106, 105
+      ]
+    }
+  },
+  {
+    "model": "auth.group",
+    "pk": 2,
+    "fields": {
+      "name": "Teachers",
+      "permissions": [
+        128, 129, 130, 132, 133, 131, 134, 135, 136, 137, 115, 107, 108, 109,
+        111, 110, 105
+      ]
+    }
+  },
+  {
+    "model": "auth.group",
+    "pk": 3,
+    "fields": {
+      "name": "Students",
+      "permissions": [128, 129, 130, 132, 133, 131, 110]
+    }
+  }
+]

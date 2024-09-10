@@ -1,0 +1,1864 @@
+[
+  {
+    "model": "auth.permission",
+    "pk": 1,
+    "fields": {
+      "name": "Can add permission",
+      "content_type": 1,
+      "codename": "add_permission"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 2,
+    "fields": {
+      "name": "Can change permission",
+      "content_type": 1,
+      "codename": "change_permission"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 3,
+    "fields": {
+      "name": "Can delete permission",
+      "content_type": 1,
+      "codename": "delete_permission"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 4,
+    "fields": {
+      "name": "Can view permission",
+      "content_type": 1,
+      "codename": "view_permission"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 5,
+    "fields": {
+      "name": "Can add group",
+      "content_type": 2,
+      "codename": "add_group"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 6,
+    "fields": {
+      "name": "Can change group",
+      "content_type": 2,
+      "codename": "change_group"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 7,
+    "fields": {
+      "name": "Can delete group",
+      "content_type": 2,
+      "codename": "delete_group"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 8,
+    "fields": {
+      "name": "Can view group",
+      "content_type": 2,
+      "codename": "view_group"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 9,
+    "fields": {
+      "name": "Can add content type",
+      "content_type": 3,
+      "codename": "add_contenttype"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 10,
+    "fields": {
+      "name": "Can change content type",
+      "content_type": 3,
+      "codename": "change_contenttype"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 11,
+    "fields": {
+      "name": "Can delete content type",
+      "content_type": 3,
+      "codename": "delete_contenttype"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 12,
+    "fields": {
+      "name": "Can view content type",
+      "content_type": 3,
+      "codename": "view_contenttype"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 13,
+    "fields": {
+      "name": "Can add session",
+      "content_type": 4,
+      "codename": "add_session"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 14,
+    "fields": {
+      "name": "Can change session",
+      "content_type": 4,
+      "codename": "change_session"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 15,
+    "fields": {
+      "name": "Can delete session",
+      "content_type": 4,
+      "codename": "delete_session"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 16,
+    "fields": {
+      "name": "Can view session",
+      "content_type": 4,
+      "codename": "view_session"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 17,
+    "fields": {
+      "name": "Can add site",
+      "content_type": 5,
+      "codename": "add_site"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 18,
+    "fields": {
+      "name": "Can change site",
+      "content_type": 5,
+      "codename": "change_site"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 19,
+    "fields": {
+      "name": "Can delete site",
+      "content_type": 5,
+      "codename": "delete_site"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 20,
+    "fields": {
+      "name": "Can view site",
+      "content_type": 5,
+      "codename": "view_site"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 21,
+    "fields": {
+      "name": "Can add log entry",
+      "content_type": 6,
+      "codename": "add_logentry"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 22,
+    "fields": {
+      "name": "Can change log entry",
+      "content_type": 6,
+      "codename": "change_logentry"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 23,
+    "fields": {
+      "name": "Can delete log entry",
+      "content_type": 6,
+      "codename": "delete_logentry"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 24,
+    "fields": {
+      "name": "Can view log entry",
+      "content_type": 6,
+      "codename": "view_logentry"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 25,
+    "fields": {
+      "name": "Can add email address",
+      "content_type": 7,
+      "codename": "add_emailaddress"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 26,
+    "fields": {
+      "name": "Can change email address",
+      "content_type": 7,
+      "codename": "change_emailaddress"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 27,
+    "fields": {
+      "name": "Can delete email address",
+      "content_type": 7,
+      "codename": "delete_emailaddress"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 28,
+    "fields": {
+      "name": "Can view email address",
+      "content_type": 7,
+      "codename": "view_emailaddress"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 29,
+    "fields": {
+      "name": "Can add email confirmation",
+      "content_type": 8,
+      "codename": "add_emailconfirmation"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 30,
+    "fields": {
+      "name": "Can change email confirmation",
+      "content_type": 8,
+      "codename": "change_emailconfirmation"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 31,
+    "fields": {
+      "name": "Can delete email confirmation",
+      "content_type": 8,
+      "codename": "delete_emailconfirmation"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 32,
+    "fields": {
+      "name": "Can view email confirmation",
+      "content_type": 8,
+      "codename": "view_emailconfirmation"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 33,
+    "fields": {
+      "name": "Can add social account",
+      "content_type": 9,
+      "codename": "add_socialaccount"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 34,
+    "fields": {
+      "name": "Can change social account",
+      "content_type": 9,
+      "codename": "change_socialaccount"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 35,
+    "fields": {
+      "name": "Can delete social account",
+      "content_type": 9,
+      "codename": "delete_socialaccount"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 36,
+    "fields": {
+      "name": "Can view social account",
+      "content_type": 9,
+      "codename": "view_socialaccount"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 37,
+    "fields": {
+      "name": "Can add social application",
+      "content_type": 10,
+      "codename": "add_socialapp"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 38,
+    "fields": {
+      "name": "Can change social application",
+      "content_type": 10,
+      "codename": "change_socialapp"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 39,
+    "fields": {
+      "name": "Can delete social application",
+      "content_type": 10,
+      "codename": "delete_socialapp"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 40,
+    "fields": {
+      "name": "Can view social application",
+      "content_type": 10,
+      "codename": "view_socialapp"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 41,
+    "fields": {
+      "name": "Can add social application token",
+      "content_type": 11,
+      "codename": "add_socialtoken"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 42,
+    "fields": {
+      "name": "Can change social application token",
+      "content_type": 11,
+      "codename": "change_socialtoken"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 43,
+    "fields": {
+      "name": "Can delete social application token",
+      "content_type": 11,
+      "codename": "delete_socialtoken"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 44,
+    "fields": {
+      "name": "Can view social application token",
+      "content_type": 11,
+      "codename": "view_socialtoken"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 45,
+    "fields": {
+      "name": "Can add crontab",
+      "content_type": 12,
+      "codename": "add_crontabschedule"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 46,
+    "fields": {
+      "name": "Can change crontab",
+      "content_type": 12,
+      "codename": "change_crontabschedule"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 47,
+    "fields": {
+      "name": "Can delete crontab",
+      "content_type": 12,
+      "codename": "delete_crontabschedule"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 48,
+    "fields": {
+      "name": "Can view crontab",
+      "content_type": 12,
+      "codename": "view_crontabschedule"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 49,
+    "fields": {
+      "name": "Can add interval",
+      "content_type": 13,
+      "codename": "add_intervalschedule"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 50,
+    "fields": {
+      "name": "Can change interval",
+      "content_type": 13,
+      "codename": "change_intervalschedule"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 51,
+    "fields": {
+      "name": "Can delete interval",
+      "content_type": 13,
+      "codename": "delete_intervalschedule"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 52,
+    "fields": {
+      "name": "Can view interval",
+      "content_type": 13,
+      "codename": "view_intervalschedule"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 53,
+    "fields": {
+      "name": "Can add periodic task",
+      "content_type": 14,
+      "codename": "add_periodictask"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 54,
+    "fields": {
+      "name": "Can change periodic task",
+      "content_type": 14,
+      "codename": "change_periodictask"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 55,
+    "fields": {
+      "name": "Can delete periodic task",
+      "content_type": 14,
+      "codename": "delete_periodictask"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 56,
+    "fields": {
+      "name": "Can view periodic task",
+      "content_type": 14,
+      "codename": "view_periodictask"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 57,
+    "fields": {
+      "name": "Can add periodic task track",
+      "content_type": 15,
+      "codename": "add_periodictasks"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 58,
+    "fields": {
+      "name": "Can change periodic task track",
+      "content_type": 15,
+      "codename": "change_periodictasks"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 59,
+    "fields": {
+      "name": "Can delete periodic task track",
+      "content_type": 15,
+      "codename": "delete_periodictasks"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 60,
+    "fields": {
+      "name": "Can view periodic task track",
+      "content_type": 15,
+      "codename": "view_periodictasks"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 61,
+    "fields": {
+      "name": "Can add solar event",
+      "content_type": 16,
+      "codename": "add_solarschedule"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 62,
+    "fields": {
+      "name": "Can change solar event",
+      "content_type": 16,
+      "codename": "change_solarschedule"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 63,
+    "fields": {
+      "name": "Can delete solar event",
+      "content_type": 16,
+      "codename": "delete_solarschedule"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 64,
+    "fields": {
+      "name": "Can view solar event",
+      "content_type": 16,
+      "codename": "view_solarschedule"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 65,
+    "fields": {
+      "name": "Can add clocked",
+      "content_type": 17,
+      "codename": "add_clockedschedule"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 66,
+    "fields": {
+      "name": "Can change clocked",
+      "content_type": 17,
+      "codename": "change_clockedschedule"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 67,
+    "fields": {
+      "name": "Can delete clocked",
+      "content_type": 17,
+      "codename": "delete_clockedschedule"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 68,
+    "fields": {
+      "name": "Can view clocked",
+      "content_type": 17,
+      "codename": "view_clockedschedule"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 69,
+    "fields": {
+      "name": "Can add revision",
+      "content_type": 18,
+      "codename": "add_revision"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 70,
+    "fields": {
+      "name": "Can change revision",
+      "content_type": 18,
+      "codename": "change_revision"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 71,
+    "fields": {
+      "name": "Can delete revision",
+      "content_type": 18,
+      "codename": "delete_revision"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 72,
+    "fields": {
+      "name": "Can view revision",
+      "content_type": 18,
+      "codename": "view_revision"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 73,
+    "fields": {
+      "name": "Can add version",
+      "content_type": 19,
+      "codename": "add_version"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 74,
+    "fields": {
+      "name": "Can change version",
+      "content_type": 19,
+      "codename": "change_version"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 75,
+    "fields": {
+      "name": "Can delete version",
+      "content_type": 19,
+      "codename": "delete_version"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 76,
+    "fields": {
+      "name": "Can view version",
+      "content_type": 19,
+      "codename": "view_version"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 77,
+    "fields": {
+      "name": "Can add user",
+      "content_type": 20,
+      "codename": "add_user"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 78,
+    "fields": {
+      "name": "Can change user",
+      "content_type": 20,
+      "codename": "change_user"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 79,
+    "fields": {
+      "name": "Can delete user",
+      "content_type": 20,
+      "codename": "delete_user"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 80,
+    "fields": {
+      "name": "Can view user",
+      "content_type": 20,
+      "codename": "view_user"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 81,
+    "fields": {
+      "name": "Can add Cluster Config",
+      "content_type": 21,
+      "codename": "add_clusterconfig"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 82,
+    "fields": {
+      "name": "Can change Cluster Config",
+      "content_type": 21,
+      "codename": "change_clusterconfig"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 83,
+    "fields": {
+      "name": "Can delete Cluster Config",
+      "content_type": 21,
+      "codename": "delete_clusterconfig"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 84,
+    "fields": {
+      "name": "Can view Cluster Config",
+      "content_type": 21,
+      "codename": "view_clusterconfig"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 85,
+    "fields": {
+      "name": "Can add Resource Quota",
+      "content_type": 22,
+      "codename": "add_resourcequota"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 86,
+    "fields": {
+      "name": "Can change Resource Quota",
+      "content_type": 22,
+      "codename": "change_resourcequota"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 87,
+    "fields": {
+      "name": "Can delete Resource Quota",
+      "content_type": 22,
+      "codename": "delete_resourcequota"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 88,
+    "fields": {
+      "name": "Can view Resource Quota",
+      "content_type": 22,
+      "codename": "view_resourcequota"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 89,
+    "fields": {
+      "name": "Can add Organisation",
+      "content_type": 23,
+      "codename": "add_organisation"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 90,
+    "fields": {
+      "name": "Can change Organisation",
+      "content_type": 23,
+      "codename": "change_organisation"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 91,
+    "fields": {
+      "name": "Can delete Organisation",
+      "content_type": 23,
+      "codename": "delete_organisation"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 92,
+    "fields": {
+      "name": "Can view Organisation",
+      "content_type": 23,
+      "codename": "view_organisation"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 93,
+    "fields": {
+      "name": "Can add Organisation Quota",
+      "content_type": 24,
+      "codename": "add_organisationquota"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 94,
+    "fields": {
+      "name": "Can change Organisation Quota",
+      "content_type": 24,
+      "codename": "change_organisationquota"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 95,
+    "fields": {
+      "name": "Can delete Organisation Quota",
+      "content_type": 24,
+      "codename": "delete_organisationquota"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 96,
+    "fields": {
+      "name": "Can view Organisation Quota",
+      "content_type": 24,
+      "codename": "view_organisationquota"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 97,
+    "fields": {
+      "name": "Can add Administrator",
+      "content_type": 25,
+      "codename": "add_administrator"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 98,
+    "fields": {
+      "name": "Can change Administrator",
+      "content_type": 25,
+      "codename": "change_administrator"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 99,
+    "fields": {
+      "name": "Can delete Administrator",
+      "content_type": 25,
+      "codename": "delete_administrator"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 100,
+    "fields": {
+      "name": "Can view Administrator",
+      "content_type": 25,
+      "codename": "view_administrator"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 101,
+    "fields": {
+      "name": "Can view dashboard",
+      "content_type": 25,
+      "codename": "view_dashboard"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 102,
+    "fields": {
+      "name": "Can add Teacher",
+      "content_type": 26,
+      "codename": "add_teacher"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 103,
+    "fields": {
+      "name": "Can change Teacher",
+      "content_type": 26,
+      "codename": "change_teacher"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 104,
+    "fields": {
+      "name": "Can delete Teacher",
+      "content_type": 26,
+      "codename": "delete_teacher"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 105,
+    "fields": {
+      "name": "Can view Teacher",
+      "content_type": 26,
+      "codename": "view_teacher"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 106,
+    "fields": {
+      "name": "Can resend confirmation email to teacher",
+      "content_type": 26,
+      "codename": "teacher_resend_confirm_email"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 107,
+    "fields": {
+      "name": "Can add Student",
+      "content_type": 27,
+      "codename": "add_student"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 108,
+    "fields": {
+      "name": "Can change Student",
+      "content_type": 27,
+      "codename": "change_student"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 109,
+    "fields": {
+      "name": "Can delete Student",
+      "content_type": 27,
+      "codename": "delete_student"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 110,
+    "fields": {
+      "name": "Can view Student",
+      "content_type": 27,
+      "codename": "view_student"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 111,
+    "fields": {
+      "name": "Can resend confirmation email to student",
+      "content_type": 27,
+      "codename": "student_resend_confirm_email"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 112,
+    "fields": {
+      "name": "Can add Class",
+      "content_type": 28,
+      "codename": "add_class"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 113,
+    "fields": {
+      "name": "Can change Class",
+      "content_type": 28,
+      "codename": "change_class"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 114,
+    "fields": {
+      "name": "Can delete Class",
+      "content_type": 28,
+      "codename": "delete_class"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 115,
+    "fields": {
+      "name": "Can view Class",
+      "content_type": 28,
+      "codename": "view_class"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 116,
+    "fields": {
+      "name": "Can add App Category",
+      "content_type": 29,
+      "codename": "add_appcategory"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 117,
+    "fields": {
+      "name": "Can change App Category",
+      "content_type": 29,
+      "codename": "change_appcategory"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 118,
+    "fields": {
+      "name": "Can delete App Category",
+      "content_type": 29,
+      "codename": "delete_appcategory"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 119,
+    "fields": {
+      "name": "Can view App Category",
+      "content_type": 29,
+      "codename": "view_appcategory"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 120,
+    "fields": {
+      "name": "Can add App Template",
+      "content_type": 30,
+      "codename": "add_apptemplate"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 121,
+    "fields": {
+      "name": "Can change App Template",
+      "content_type": 30,
+      "codename": "change_apptemplate"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 122,
+    "fields": {
+      "name": "Can delete App Template",
+      "content_type": 30,
+      "codename": "delete_apptemplate"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 123,
+    "fields": {
+      "name": "Can view App Template",
+      "content_type": 30,
+      "codename": "view_apptemplate"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 124,
+    "fields": {
+      "name": "Can add App Template Key Value",
+      "content_type": 31,
+      "codename": "add_apptemplatekeyvalue"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 125,
+    "fields": {
+      "name": "Can change App Template Key Value",
+      "content_type": 31,
+      "codename": "change_apptemplatekeyvalue"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 126,
+    "fields": {
+      "name": "Can delete App Template Key Value",
+      "content_type": 31,
+      "codename": "delete_apptemplatekeyvalue"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 127,
+    "fields": {
+      "name": "Can view App Template Key Value",
+      "content_type": 31,
+      "codename": "view_apptemplatekeyvalue"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 128,
+    "fields": {
+      "name": "Can add App",
+      "content_type": 32,
+      "codename": "add_app"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 129,
+    "fields": {
+      "name": "Can change App",
+      "content_type": 32,
+      "codename": "change_app"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 130,
+    "fields": {
+      "name": "Can delete App",
+      "content_type": 32,
+      "codename": "delete_app"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 131,
+    "fields": {
+      "name": "Can view App",
+      "content_type": 32,
+      "codename": "view_app"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 132,
+    "fields": {
+      "name": "Can start an app",
+      "content_type": 32,
+      "codename": "start_app"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 133,
+    "fields": {
+      "name": "Can stop an app",
+      "content_type": 32,
+      "codename": "stop_app"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 134,
+    "fields": {
+      "name": "Can add Managed App",
+      "content_type": 33,
+      "codename": "add_managedapp"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 135,
+    "fields": {
+      "name": "Can change Managed App",
+      "content_type": 33,
+      "codename": "change_managedapp"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 136,
+    "fields": {
+      "name": "Can delete Managed App",
+      "content_type": 33,
+      "codename": "delete_managedapp"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 137,
+    "fields": {
+      "name": "Can view Managed App",
+      "content_type": 33,
+      "codename": "view_managedapp"
+    }
+  },
+  {
+    "model": "auth.group",
+    "pk": 1,
+    "fields": {
+      "name": "Administrators",
+      "permissions": [
+        101, 112, 113, 114, 115, 92, 107, 108, 109, 111, 110, 102, 103, 104,
+        106, 105
+      ]
+    }
+  },
+  {
+    "model": "auth.group",
+    "pk": 2,
+    "fields": {
+      "name": "Teachers",
+      "permissions": [
+        128, 129, 130, 132, 133, 131, 134, 135, 136, 137, 115, 107, 108, 109,
+        111, 110, 105
+      ]
+    }
+  },
+  {
+    "model": "auth.group",
+    "pk": 3,
+    "fields": {
+      "name": "Students",
+      "permissions": [128, 129, 130, 132, 133, 131, 110]
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 1,
+    "fields": { "app_label": "auth", "model": "permission" }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 2,
+    "fields": { "app_label": "auth", "model": "group" }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 3,
+    "fields": { "app_label": "contenttypes", "model": "contenttype" }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 4,
+    "fields": { "app_label": "sessions", "model": "session" }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 5,
+    "fields": { "app_label": "sites", "model": "site" }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 6,
+    "fields": { "app_label": "admin", "model": "logentry" }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 7,
+    "fields": { "app_label": "account", "model": "emailaddress" }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 8,
+    "fields": { "app_label": "account", "model": "emailconfirmation" }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 9,
+    "fields": { "app_label": "socialaccount", "model": "socialaccount" }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 10,
+    "fields": { "app_label": "socialaccount", "model": "socialapp" }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 11,
+    "fields": { "app_label": "socialaccount", "model": "socialtoken" }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 12,
+    "fields": { "app_label": "django_celery_beat", "model": "crontabschedule" }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 13,
+    "fields": { "app_label": "django_celery_beat", "model": "intervalschedule" }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 14,
+    "fields": { "app_label": "django_celery_beat", "model": "periodictask" }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 15,
+    "fields": { "app_label": "django_celery_beat", "model": "periodictasks" }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 16,
+    "fields": { "app_label": "django_celery_beat", "model": "solarschedule" }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 17,
+    "fields": { "app_label": "django_celery_beat", "model": "clockedschedule" }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 18,
+    "fields": { "app_label": "reversion", "model": "revision" }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 19,
+    "fields": { "app_label": "reversion", "model": "version" }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 20,
+    "fields": { "app_label": "users", "model": "user" }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 21,
+    "fields": { "app_label": "cloud", "model": "clusterconfig" }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 22,
+    "fields": { "app_label": "cloud", "model": "resourcequota" }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 23,
+    "fields": { "app_label": "organisations", "model": "organisation" }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 24,
+    "fields": { "app_label": "organisations", "model": "organisationquota" }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 25,
+    "fields": { "app_label": "administrators", "model": "administrator" }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 26,
+    "fields": { "app_label": "teachers", "model": "teacher" }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 27,
+    "fields": { "app_label": "students", "model": "student" }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 28,
+    "fields": { "app_label": "classes", "model": "class" }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 29,
+    "fields": { "app_label": "apps", "model": "appcategory" }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 30,
+    "fields": { "app_label": "apps", "model": "apptemplate" }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 31,
+    "fields": { "app_label": "apps", "model": "apptemplatekeyvalue" }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 32,
+    "fields": { "app_label": "apps", "model": "app" }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 33,
+    "fields": { "app_label": "apps", "model": "managedapp" }
+  },
+  {
+    "model": "sessions.session",
+    "pk": "2vetha65zztfwkr4sssj8dlcerec2hca",
+    "fields": {
+      "session_data": ".eJxVjDsOwyAQRO9CHSHzW5aU6X0GBAsOTiIsGbuKcvdgyUUy5bw382Y-7Fvxe8urnxO7MsEuv10M9Mz1AOkR6n3htNRtnSM_FH7Sxscl5dftdP8OSmilrxFt1ioLl4IFQ6CEcoAwKTEEDYB2oB4EGQFFp8nopKWUpHByJAz7fAG13DaV:1so4p0:kV5zV6Dhsk4ZWUAFq5F4Q1uXJtfRGneFe184uUZb0VI",
+      "expire_date": "2024-09-24T17:38:34.250Z"
+    }
+  },
+  {
+    "model": "sessions.session",
+    "pk": "pf6x2u2w6d89w86lfqyn9ii39yiaq10f",
+    "fields": {
+      "session_data": ".eJxVjEEOwiAQRe_C2jS1QCvd6UXIMAwpkWBTIBqb3t1WG6O7-e_9-TPTUPKgS6JJe8t6xtnhlxnAK8VNQAgbrgDxVmKu3p1dp-q8JorZI2R_i5f9629qgDSsOy0nqbhRqpONOULXkACheC1l29UtWicaYZxxtbS1wKZFwZ2z0pAVJ1TquI7e_RMmq2EcNU4EmfSHsH5mKdPI-lhCOLxvbSHDKpY9Oh8ofTI98gRfvywv7OlclA:1so4ta:96AcopV4nDXac9fP8ZcvnyJq7Sfc6C5jbhF-0owi9Xs",
+      "expire_date": "2024-09-24T17:43:18.799Z"
+    }
+  },
+  {
+    "model": "sites.site",
+    "pk": 1,
+    "fields": { "domain": "classlab.pl", "name": "ClassLab" }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 1,
+    "fields": {
+      "action_time": "2024-09-10T17:38:58.540Z",
+      "user": 1,
+      "content_type": 29,
+      "object_id": "1",
+      "object_repr": "Data Science",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 2,
+    "fields": {
+      "action_time": "2024-09-10T17:39:16.652Z",
+      "user": 1,
+      "content_type": 23,
+      "object_id": "1",
+      "object_repr": "Test",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 3,
+    "fields": {
+      "action_time": "2024-09-10T17:39:20.021Z",
+      "user": 1,
+      "content_type": 30,
+      "object_id": "1",
+      "object_repr": "JupyterLab",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 4,
+    "fields": {
+      "action_time": "2024-09-10T17:39:37.744Z",
+      "user": 1,
+      "content_type": 21,
+      "object_id": "1",
+      "object_repr": "Test",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 5,
+    "fields": {
+      "action_time": "2024-09-10T17:39:55.852Z",
+      "user": 1,
+      "content_type": 24,
+      "object_id": "1",
+      "object_repr": "Test Quota",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 6,
+    "fields": {
+      "action_time": "2024-09-10T17:40:17.143Z",
+      "user": 1,
+      "content_type": 20,
+      "object_id": "2",
+      "object_repr": "admin@test.com",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 7,
+    "fields": {
+      "action_time": "2024-09-10T17:40:21.912Z",
+      "user": 1,
+      "content_type": 20,
+      "object_id": "2",
+      "object_repr": "admin@test.com",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"Groups\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 8,
+    "fields": {
+      "action_time": "2024-09-10T17:40:32.701Z",
+      "user": 1,
+      "content_type": 25,
+      "object_id": "1",
+      "object_repr": "Adam Smith",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 9,
+    "fields": {
+      "action_time": "2024-09-10T17:40:52.525Z",
+      "user": 1,
+      "content_type": 7,
+      "object_id": "1",
+      "object_repr": "admin@test.com",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 10,
+    "fields": {
+      "action_time": "2024-09-10T17:40:54.869Z",
+      "user": 1,
+      "content_type": 7,
+      "object_id": "1",
+      "object_repr": "admin@test.com",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"Primary\"]}}]"
+    }
+  },
+  {
+    "model": "account.emailaddress",
+    "pk": 1,
+    "fields": {
+      "user": 2,
+      "email": "admin@test.com",
+      "verified": true,
+      "primary": true
+    }
+  },
+  {
+    "model": "account.emailaddress",
+    "pk": 2,
+    "fields": {
+      "user": 3,
+      "email": "student@test.com",
+      "verified": true,
+      "primary": true
+    }
+  },
+  {
+    "model": "account.emailaddress",
+    "pk": 3,
+    "fields": {
+      "user": 4,
+      "email": "teacher@test.com",
+      "verified": false,
+      "primary": true
+    }
+  },
+  {
+    "model": "django_celery_beat.crontabschedule",
+    "pk": 1,
+    "fields": {
+      "minute": "0",
+      "hour": "4",
+      "day_of_month": "*",
+      "month_of_year": "*",
+      "day_of_week": "*",
+      "timezone": "Europe/Warsaw"
+    }
+  },
+  {
+    "model": "django_celery_beat.periodictasks",
+    "pk": 1,
+    "fields": { "last_update": "2024-09-10T17:37:38.470Z" }
+  },
+  {
+    "model": "django_celery_beat.periodictask",
+    "pk": 1,
+    "fields": {
+      "name": "celery.backend_cleanup",
+      "task": "celery.backend_cleanup",
+      "interval": null,
+      "crontab": 1,
+      "solar": null,
+      "clocked": null,
+      "args": "[]",
+      "kwargs": "{}",
+      "queue": null,
+      "exchange": null,
+      "routing_key": null,
+      "headers": "{}",
+      "priority": null,
+      "expires": null,
+      "expire_seconds": 43200,
+      "one_off": false,
+      "start_time": null,
+      "enabled": true,
+      "last_run_at": null,
+      "total_run_count": 0,
+      "date_changed": "2024-09-10T17:37:38.469Z",
+      "description": ""
+    }
+  },
+  {
+    "model": "reversion.revision",
+    "pk": 1,
+    "fields": {
+      "date_created": "2024-09-10T17:39:19.988Z",
+      "user": 1,
+      "comment": "Added."
+    }
+  },
+  {
+    "model": "reversion.version",
+    "pk": 1,
+    "fields": {
+      "revision": 1,
+      "object_id": "1",
+      "content_type": 30,
+      "db": "default",
+      "format": "json",
+      "serialized_data": "[{\"model\": \"apps.apptemplate\", \"pk\": 1, \"fields\": {\"template_id\": \"hcruaqzdytd1\", \"name\": \"JupyterLab\", \"category\": 1, \"expose_node_port\": false, \"run_command_template\": \"\", \"managed\": false, \"manifest\": \"---\\r\\napiVersion: apps/v1\\r\\nkind: Deployment\\r\\nmetadata:\\r\\n  namespace: {{ namespace }}\\r\\n  name: {{ app_id }}\\r\\n  labels:\\r\\n    app: {{ app_id }}\\r\\n    user: {{ user_id }}\\r\\nspec:\\r\\n  replicas: 1\\r\\n  selector:\\r\\n    matchLabels:\\r\\n      app: {{ app_id }}\\r\\n      user: {{ user_id }}\\r\\n  strategy:\\r\\n    type: Recreate\\r\\n  template:\\r\\n    metadata:\\r\\n      labels:\\r\\n        app: {{ app_id }}\\r\\n        user: {{ user_id }}\\r\\n    spec:\\r\\n      containers:\\r\\n        - name: {{ app_id }}\\r\\n          image: quay.io/jupyter/datascience-notebook\\r\\n          # TODO: use secrets for token and password\\r\\n          command: [\\\"start-notebook.py\\\", \\\"--NotebookApp.token=''\\\", \\\"--NotebookApp.password=''\\\", \\\"--ServerApp.root_dir='/home/scientist'\\\"]\\r\\n          ports:\\r\\n            - containerPort: 8888\\r\\n              name: jupyterlab\\r\\n\\r\\n          volumeMounts:\\r\\n            - name: data\\r\\n              mountPath: /home/scientist\\r\\n\\r\\n      volumes:\\r\\n        - name: data\\r\\n          persistentVolumeClaim:\\r\\n            claimName: {{ app_id }}\\r\\n\\r\\n---\\r\\napiVersion: v1\\r\\nkind: PersistentVolumeClaim\\r\\nmetadata:\\r\\n  namespace: {{ namespace }}\\r\\n  name: {{ app_id }}\\r\\n  labels:\\r\\n    app: {{ app_id }}\\r\\n    user: {{ user_id }}\\r\\nspec:\\r\\n  accessModes:\\r\\n    - ReadWriteOnce\\r\\n  resources:\\r\\n    requests:\\r\\n      storage: 500Mi\\r\\n\\r\\n---\\r\\napiVersion: v1\\r\\nkind: Service\\r\\nmetadata:\\r\\n  namespace: {{ namespace }}\\r\\n  name: {{ app_id }}\\r\\n  labels:\\r\\n    app: {{ app_id }}\\r\\n    user: {{ user_id }}\\r\\nspec:\\r\\n  ports:\\r\\n    - protocol: TCP\\r\\n      port: 80\\r\\n      targetPort: 8888\\r\\n  selector:\\r\\n    app: {{ app_id }}\\r\\n    user: {{ user_id }}\\r\\n\\r\\n# ---\\r\\n# apiVersion: keda.sh/v1alpha1\\r\\n# kind: ScaledObject\\r\\n# metadata:\\r\\n#   name: {{ app_id }}\\r\\n#   namespace: {{ namespace }}\\r\\n# spec:\\r\\n#   scaleTargetRef:\\r\\n#     name: {{ app_id }}\\r\\n#   pollingInterval: 15\\r\\n#   cooldownPeriod: 600\\r\\n#   minReplicaCount: 0\\r\\n#   maxReplicaCount: 1\\r\\n#   advanced:\\r\\n#     horizontalPodAutoscalerConfig:\\r\\n#       behavior:\\r\\n#         scaleDown:\\r\\n#           stabilizationWindowSeconds: 600\\r\\n#           policies:\\r\\n#           - type: Percent\\r\\n#             value: 100\\r\\n#             periodSeconds: 15\\r\\n#         scaleUp:\\r\\n#           selectPolicy: Disabled\\r\\n#   triggers:\\r\\n#     - type: prometheus\\r\\n#       metricType: Value\\r\\n#       metadata:\\r\\n#         serverAddress: http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090\\r\\n#         query: max(max(sum(rate(container_fs_reads_total{container!=\\\"\\\",job=\\\"kubelet\\\",metrics_path=\\\"/metrics/cadvisor\\\",pod=~\\\"{{ app_id }}.*\\\"}[2m30s])+rate(container_fs_writes_total{container!=\\\"\\\",job=\\\"kubelet\\\",metrics_path=\\\"/metrics/cadvisor\\\",pod=~\\\"{{ app_id }}.*\\\"}[2m30s]))) * 100 > bool 10 or (time() - kube_pod_created{pod=~\\\"{{app_id}}.*\\\", namespace=\\\"{{ namespace }}\\\"} < bool 300))\\r\\n#         threshold: \\\"1\\\"\\r\\n#         ignoreNullValues: \\\"false\\\"\\r\\n\\r\\n---\\r\\napiVersion: traefik.containo.us/v1alpha1\\r\\nkind: IngressRoute\\r\\nmetadata:\\r\\n  name: {{ app_id }}\\r\\n  namespace: {{ namespace }}\\r\\nspec:\\r\\n  entryPoints:\\r\\n    - web\\r\\n    - websecure\\r\\n  routes:\\r\\n    - match: Host(`{{ app_id }}.{{ proxy_domain }}`)\\r\\n      kind: Rule\\r\\n      services:\\r\\n        - name: {{ app_id }}\\r\\n          port: 80\", \"description\": \"\", \"created_at\": \"2024-09-10T17:39:19.994Z\", \"updated_at\": \"2024-09-10T17:39:19.994Z\", \"organisations\": [1]}}]",
+      "object_repr": "JupyterLab"
+    }
+  },
+  {
+    "model": "users.user",
+    "pk": 1,
+    "fields": {
+      "password": "argon2$argon2id$v=19$m=102400,t=2,p=8$QjhhRWFRa1FWSmxhR3VUNE4ydTc4aA$LgGpRUIB5Gz2zDcc+V2uPwQaN8+JwhPrTXXkPzpQV4E",
+      "last_login": "2024-09-10T17:38:34.222Z",
+      "is_superuser": true,
+      "user_id": "c3o200ey4yzg",
+      "user_type": null,
+      "email": "admin@example.com",
+      "first_name": "John",
+      "last_name": "Smith",
+      "is_staff": true,
+      "is_active": true,
+      "date_joined": "2024-09-10T17:37:26.427Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.user",
+    "pk": 2,
+    "fields": {
+      "password": "argon2$argon2id$v=19$m=102400,t=2,p=8$a2VSMVlCWWJHTW9kTzJVcXNjemsxQw$Ps8W86/f5KeTQN3pUK8n3YBQkyN+UWW12kCK0DTIHp4",
+      "last_login": "2024-09-10T17:43:45.642Z",
+      "is_superuser": false,
+      "user_id": "y3j8jxrqmj9q",
+      "user_type": "ADMIN",
+      "email": "admin@test.com",
+      "first_name": "Adam",
+      "last_name": "Smith",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2024-09-10T17:40:17Z",
+      "groups": [1],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.user",
+    "pk": 3,
+    "fields": {
+      "password": "argon2$argon2id$v=19$m=102400,t=2,p=8$dThwU1VhTGxJa04wcFBNTXJWelhuMA$N18Mefdw2QT/1X3/SFOd9q1hImp7Mbchx69WBwR7Ux4",
+      "last_login": "2024-09-10T17:42:31.835Z",
+      "is_superuser": false,
+      "user_id": "xnr7kgbh223l",
+      "user_type": "STUDENT",
+      "email": "student@test.com",
+      "first_name": "Joe",
+      "last_name": "Smith",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2024-09-10T17:42:14.343Z",
+      "groups": [3],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.user",
+    "pk": 4,
+    "fields": {
+      "password": "!GNdUx8pOfxYfTnxX5PwCiBBDzPzOcQ1R1CIcY8D2",
+      "last_login": null,
+      "is_superuser": false,
+      "user_id": "ipjwb45py6by",
+      "user_type": "TEACHER",
+      "email": "teacher@test.com",
+      "first_name": "Jenny",
+      "last_name": "Smith",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2024-09-10T17:44:06.529Z",
+      "groups": [2],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "cloud.clusterconfig",
+    "pk": 1,
+    "fields": {
+      "name": "Test",
+      "organisation": 1,
+      "namespace": "default",
+      "spot_pool": false
+    }
+  },
+  {
+    "model": "organisations.organisation",
+    "pk": 1,
+    "fields": {
+      "organisation_id": "xrpo88diyrys",
+      "name": "Test",
+      "slug": "test",
+      "created_by": 1,
+      "created_at": "2024-09-10T17:39:16.648Z",
+      "updated_at": "2024-09-10T17:39:16.648Z"
+    }
+  },
+  {
+    "model": "organisations.organisationquota",
+    "pk": 1,
+    "fields": {
+      "organisation": 1,
+      "max_number_of_students": 100,
+      "max_number_of_teachers": 100,
+      "max_number_of_apps_per_student": 100,
+      "max_number_of_apps_per_teacher": 100
+    }
+  },
+  {
+    "model": "administrators.administrator",
+    "pk": 1,
+    "fields": {
+      "user": 2,
+      "administrator_id": "jw5401fvjtcw",
+      "organisation": 1,
+      "created_by": 1,
+      "created_at": "2024-09-10T17:40:32.700Z",
+      "updated_at": "2024-09-10T17:40:32.700Z"
+    }
+  },
+  {
+    "model": "teachers.teacher",
+    "pk": 1,
+    "fields": {
+      "user": 4,
+      "teacher_id": "cybo59fpl5vl",
+      "organisation": 1,
+      "created_by": null,
+      "created_at": "2024-09-10T17:44:06.541Z",
+      "updated_at": "2024-09-10T17:44:06.541Z",
+      "classes": []
+    }
+  },
+  {
+    "model": "students.student",
+    "pk": 1,
+    "fields": {
+      "user": 3,
+      "student_id": "k5a6kejap65e",
+      "organisation": 1,
+      "student_class": 1,
+      "created_by": null,
+      "created_at": "2024-09-10T17:42:14.354Z",
+      "updated_at": "2024-09-10T17:42:14.354Z"
+    }
+  },
+  {
+    "model": "classes.class",
+    "pk": 1,
+    "fields": {
+      "class_id": "mifgqx1px1we",
+      "name": "Data Science",
+      "organisation": 1,
+      "created_by": null,
+      "created_at": "2024-09-10T17:41:37.863Z",
+      "updated_at": "2024-09-10T17:41:37.863Z"
+    }
+  },
+  {
+    "model": "apps.appcategory",
+    "pk": 1,
+    "fields": {
+      "name": "Data Science",
+      "slug": "data-science",
+      "created_at": "2024-09-10T17:38:58.537Z",
+      "updated_at": "2024-09-10T17:38:58.537Z"
+    }
+  },
+  {
+    "model": "apps.apptemplate",
+    "pk": 1,
+    "fields": {
+      "template_id": "hcruaqzdytd1",
+      "name": "JupyterLab",
+      "category": 1,
+      "expose_node_port": false,
+      "run_command_template": "",
+      "managed": false,
+      "manifest": "---\r\napiVersion: apps/v1\r\nkind: Deployment\r\nmetadata:\r\n  namespace: {{ namespace }}\r\n  name: {{ app_id }}\r\n  labels:\r\n    app: {{ app_id }}\r\n    user: {{ user_id }}\r\nspec:\r\n  replicas: 1\r\n  selector:\r\n    matchLabels:\r\n      app: {{ app_id }}\r\n      user: {{ user_id }}\r\n  strategy:\r\n    type: Recreate\r\n  template:\r\n    metadata:\r\n      labels:\r\n        app: {{ app_id }}\r\n        user: {{ user_id }}\r\n    spec:\r\n      containers:\r\n        - name: {{ app_id }}\r\n          image: quay.io/jupyter/datascience-notebook\r\n          # TODO: use secrets for token and password\r\n          command: [\"start-notebook.py\", \"--NotebookApp.token=''\", \"--NotebookApp.password=''\", \"--ServerApp.root_dir='/home/scientist'\"]\r\n          ports:\r\n            - containerPort: 8888\r\n              name: jupyterlab\r\n\r\n          volumeMounts:\r\n            - name: data\r\n              mountPath: /home/scientist\r\n\r\n      volumes:\r\n        - name: data\r\n          persistentVolumeClaim:\r\n            claimName: {{ app_id }}\r\n\r\n---\r\napiVersion: v1\r\nkind: PersistentVolumeClaim\r\nmetadata:\r\n  namespace: {{ namespace }}\r\n  name: {{ app_id }}\r\n  labels:\r\n    app: {{ app_id }}\r\n    user: {{ user_id }}\r\nspec:\r\n  accessModes:\r\n    - ReadWriteOnce\r\n  resources:\r\n    requests:\r\n      storage: 500Mi\r\n\r\n---\r\napiVersion: v1\r\nkind: Service\r\nmetadata:\r\n  namespace: {{ namespace }}\r\n  name: {{ app_id }}\r\n  labels:\r\n    app: {{ app_id }}\r\n    user: {{ user_id }}\r\nspec:\r\n  ports:\r\n    - protocol: TCP\r\n      port: 80\r\n      targetPort: 8888\r\n  selector:\r\n    app: {{ app_id }}\r\n    user: {{ user_id }}\r\n\r\n# ---\r\n# apiVersion: keda.sh/v1alpha1\r\n# kind: ScaledObject\r\n# metadata:\r\n#   name: {{ app_id }}\r\n#   namespace: {{ namespace }}\r\n# spec:\r\n#   scaleTargetRef:\r\n#     name: {{ app_id }}\r\n#   pollingInterval: 15\r\n#   cooldownPeriod: 600\r\n#   minReplicaCount: 0\r\n#   maxReplicaCount: 1\r\n#   advanced:\r\n#     horizontalPodAutoscalerConfig:\r\n#       behavior:\r\n#         scaleDown:\r\n#           stabilizationWindowSeconds: 600\r\n#           policies:\r\n#           - type: Percent\r\n#             value: 100\r\n#             periodSeconds: 15\r\n#         scaleUp:\r\n#           selectPolicy: Disabled\r\n#   triggers:\r\n#     - type: prometheus\r\n#       metricType: Value\r\n#       metadata:\r\n#         serverAddress: http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090\r\n#         query: max(max(sum(rate(container_fs_reads_total{container!=\"\",job=\"kubelet\",metrics_path=\"/metrics/cadvisor\",pod=~\"{{ app_id }}.*\"}[2m30s])+rate(container_fs_writes_total{container!=\"\",job=\"kubelet\",metrics_path=\"/metrics/cadvisor\",pod=~\"{{ app_id }}.*\"}[2m30s]))) * 100 > bool 10 or (time() - kube_pod_created{pod=~\"{{app_id}}.*\", namespace=\"{{ namespace }}\"} < bool 300))\r\n#         threshold: \"1\"\r\n#         ignoreNullValues: \"false\"\r\n\r\n---\r\napiVersion: traefik.containo.us/v1alpha1\r\nkind: IngressRoute\r\nmetadata:\r\n  name: {{ app_id }}\r\n  namespace: {{ namespace }}\r\nspec:\r\n  entryPoints:\r\n    - web\r\n    - websecure\r\n  routes:\r\n    - match: Host(`{{ app_id }}.{{ proxy_domain }}`)\r\n      kind: Rule\r\n      services:\r\n        - name: {{ app_id }}\r\n          port: 80",
+      "description": "",
+      "created_at": "2024-09-10T17:39:19.994Z",
+      "updated_at": "2024-09-10T17:39:19.994Z",
+      "organisations": [1]
+    }
+  }
+]

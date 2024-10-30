@@ -24,7 +24,7 @@ django-reversion==5.1.0  #
 django-formtools==2.5.1
 django-select2==8.2.1
 django-cookie-consent==0.6.0
-django-read-only==1.16.0
+django-read-only==1.18.0
 django-browser-reload==1.16.0
 djhtml==3.0.6
 django-maintenance-mode==0.21.1

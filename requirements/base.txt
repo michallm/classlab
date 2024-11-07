@@ -26,7 +26,7 @@ django-select2==8.2.1
 django-cookie-consent==0.6.0
 django-read-only==1.18.0
 django-browser-reload==1.16.0
-djhtml==3.0.6
+djhtml==3.0.7
 django-maintenance-mode==0.21.1
 django-ratelimit==4.1.0
 
